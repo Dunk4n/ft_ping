@@ -882,7 +882,21 @@ uint8_t Fu8__get_value_from_ping_argument(volatile struct cstc_ping_data *ptr_cs
     /**
     * Allow IPv4 or IPv6
     */
-    estc_lcl_address_requested.ai_family = AF_UNSPEC;
+    if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[USE_IPV4] != FALSE)
+        {
+        estc_lcl_address_requested.ai_family = AF_INET;
+        }
+    else
+        {
+        if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[USE_IPV6] != FALSE)
+            {
+            estc_lcl_address_requested.ai_family = AF_INET6;
+            }
+        else
+            {
+            estc_lcl_address_requested.ai_family = AF_UNSPEC;
+            }
+        }
 
     /**
     * Getting the address information of the given destination
@@ -908,6 +922,11 @@ uint8_t Fu8__get_value_from_ping_argument(volatile struct cstc_ping_data *ptr_cs
                 break;
             case(EAI_NONAME):
                 fprintf(stderr, "ft_ping: %s: Name or service not known\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
+                ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
+                return (RETURN_FAILURE);
+                break;
+            case(EAI_ADDRFAMILY):
+                fprintf(stderr, "ft_ping: %s: Address family for hostname not supported\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
                 ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
                 return (RETURN_FAILURE);
                 break;
@@ -1539,6 +1558,10 @@ void Fv__display_ping_statistic(volatile struct cstc_ping_data *ptr_cstc_pssd_pi
     printf("\n--- %s ping statistics ----\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
     printf("%u packets transmitted, ", ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_);
     printf("%u received, ", ptr_cstc_pssd_ping_data->u32_number_packets_receved_);
+    if(ptr_cstc_pssd_ping_data->u32_number_errors_ > 0)
+        {
+        printf("+%u errors, ", ptr_cstc_pssd_ping_data->u32_number_errors_);
+        }
     printf("%u%% packet loss, ", (uint32_t) ((1.0f - ((float) ptr_cstc_pssd_ping_data->u32_number_packets_receved_ / (float) ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_)) * 100.0f));
     printf("time %lums\n", (get_time() - ptr_cstc_pssd_ping_data->estc_start_time_) / 1000);
 

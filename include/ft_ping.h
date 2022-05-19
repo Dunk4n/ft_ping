@@ -1,6 +1,8 @@
 #ifndef FT_PING
 # define FT_PING
 
+#define _GNU_SOURCE
+
 # include <inttypes.h>
 # include <limits.h>
 # include <stdint.h>
@@ -57,6 +59,8 @@ enum e_simple_option_list
     FLOOD,
     NUMERIC_OUTPUT,
     QUIET_OUTPUT,
+    USE_IPV4,
+    USE_IPV6,
 
     SIMPLE_OPTION_NUMBER,
     NO_SIMPLE_OPTION                                                           // range UINT8_MAX

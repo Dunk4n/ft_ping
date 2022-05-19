@@ -1215,13 +1215,21 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
         if(ptr_estc_lcl_icmp_header->type == ICMP_ECHO)
             return (RETURN_SUCCESS);
 
-        if(ptr_estc_lcl_icmp_header->type < sizeof(u8_glbl_icmp_responses_str))
+        if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[QUIET_OUTPUT] == FALSE)
             {
-            printf("From %s icmp_seq=%hu %s\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), Fptr_u8__get_icmp_responses_str(ptr_estc_lcl_icmp_header->type));
-            }
-        else
-            {
-            printf("From %s icmp_seq=%hu\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence));
+            if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[VERBOSE_OUTPUT] != FALSE)
+                {
+                (void) Fv__display_receved_packet(ptr_cstc_pssd_ping_data, ptr_u8_pssd_packet);
+                }
+
+            if(ptr_estc_lcl_icmp_header->type < sizeof(u8_glbl_icmp_responses_str))
+                {
+                printf("From %s icmp_seq=%hu %s\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), Fptr_u8__get_icmp_responses_str(ptr_estc_lcl_icmp_header->type));
+                }
+            else
+                {
+                printf("From %s icmp_seq=%hu\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence));
+                }
             }
 
         /**
@@ -1262,17 +1270,20 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
         */
         estc_lcl_rtt = get_time() - ((ptr_estc_lcl_time_value->tv_sec * 1000000) + ptr_estc_lcl_time_value->tv_usec);
 
-        if(((double) estc_lcl_rtt) / 1000.0f < 1.0f)
+        if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[QUIET_OUTPUT] == FALSE)
             {
-            printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.03f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
-            }
-        else if(((double) estc_lcl_rtt) / 1000.0f < 10.0f)
-            {
-            printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.02f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
-            }
-        else
-            {
-            printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.01f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
+            if(((double) estc_lcl_rtt) / 1000.0f < 1.0f)
+                {
+                printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.03f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
+                }
+            else if(((double) estc_lcl_rtt) / 1000.0f < 10.0f)
+                {
+                printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.02f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
+                }
+            else
+                {
+                printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.01f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
+                }
             }
 
         /**
@@ -1528,13 +1539,21 @@ static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *p
         if(ptr_estc_lcl_icmp_v6_header->icmp6_type == ICMPV6_ECHO_REQUEST)
             return (RETURN_SUCCESS);
 
-        if(ptr_estc_lcl_icmp_v6_header->icmp6_type < sizeof(u8_glbl_icmp_responses_str))
+        if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[QUIET_OUTPUT] == FALSE)
             {
-            printf("From %s icmp_seq=%hu %s\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), Fptr_u8__get_icmp_v6_responses_str(ptr_estc_lcl_icmp_v6_header->icmp6_type));
-            }
-        else
-            {
-            printf("From %s icmp_seq=%hu\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence));
+            if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[VERBOSE_OUTPUT] != FALSE)
+                {
+                (void) Fv__display_receved_packet(ptr_cstc_pssd_ping_data, ptr_u8_pssd_packet);
+                }
+
+            if(ptr_estc_lcl_icmp_v6_header->icmp6_type < sizeof(u8_glbl_icmp_responses_str))
+                {
+                printf("From %s icmp_seq=%hu %s\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), Fptr_u8__get_icmp_v6_responses_str(ptr_estc_lcl_icmp_v6_header->icmp6_type));
+                }
+            else
+                {
+                printf("From %s icmp_seq=%hu\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence));
+                }
             }
 
         /**
@@ -1575,17 +1594,20 @@ static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *p
         */
         estc_lcl_rtt = get_time() - ((ptr_estc_lcl_time_value->tv_sec * 1000000) + ptr_estc_lcl_time_value->tv_usec);
 
-        if(((double) estc_lcl_rtt) / 1000.0f < 1.0f)
+        if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[QUIET_OUTPUT] == FALSE)
             {
-            printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.03f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
-            }
-        else if(((double) estc_lcl_rtt) / 1000.0f < 10.0f)
-            {
-            printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.02f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
-            }
-        else
-            {
-            printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.01f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
+            if(((double) estc_lcl_rtt) / 1000.0f < 1.0f)
+                {
+                printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.03f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
+                }
+            else if(((double) estc_lcl_rtt) / 1000.0f < 10.0f)
+                {
+                printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.02f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
+                }
+            else
+                {
+                printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.01f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
+                }
             }
 
         /**
@@ -1793,8 +1815,6 @@ uint8_t Fu8__receve_pong(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data
             * Treat the case when function to get packet from destination succeeded
             */
             }
-
-        (void) Fv__display_receved_packet(ptr_cstc_pssd_ping_data, u8_lcl_packet);
 
         /**
         * Check if the receved packet have an error

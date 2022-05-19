@@ -78,6 +78,8 @@ void Fv__help(void)
     ft_fprintf(STDERR_FILENO, "  -v                 verbose output\n");
     ft_fprintf(STDERR_FILENO, "  -w <deadline>      reply wait <deadline> in seconds\n");
     ft_fprintf(STDERR_FILENO, "  -W <timeout>       time to wait for response\n");
+    ft_fprintf(STDERR_FILENO, "  -4                 use IPv4\n");
+    ft_fprintf(STDERR_FILENO, "  -6                 use IPv6\n");
     }
 
 int main(int argc, char **argv)
@@ -311,6 +313,98 @@ int main(int argc, char **argv)
         */
         }
 
+    if(cstc_glbl_ping_data.sstc_argument_.ptr_u8_simple_options_[HELP] != FALSE)
+        {
+        (void) Fv__help();
+
+        /**
+        * Closing the global structure ping data
+        */
+        u8_lcl_return_from_function = RETURN_FAILURE;
+        u8_lcl_return_from_function = Fu8__close_cstc_ping_data(&cstc_glbl_ping_data);
+
+        /**
+        * Check if function to close the global structure ping data succeeded
+        */
+        if(u8_lcl_return_from_function != RETURN_SUCCESS)
+            {
+            /**
+            * Treat the case when the function to close the global structure ping data failed
+            */
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the global structure ping data failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Return failure to indicate the function to close the global structure ping data failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to close the global structure ping data succeeded
+            */
+            }
+
+        return (RETURN_SUCCESS);
+        }
+
+    if((cstc_glbl_ping_data.sstc_argument_.ptr_u8_simple_options_[USE_IPV4] != FALSE) && (cstc_glbl_ping_data.sstc_argument_.ptr_u8_simple_options_[USE_IPV6] != FALSE))
+        {
+        ft_fprintf(STDERR_FILENO, "ft_ping: only one -4 or -6 option may be specified\n");
+
+        /**
+        * Closing the global structure ping data
+        */
+        u8_lcl_return_from_function = RETURN_FAILURE;
+        u8_lcl_return_from_function = Fu8__close_cstc_ping_data(&cstc_glbl_ping_data);
+
+        /**
+        * Check if function to close the global structure ping data succeeded
+        */
+        if(u8_lcl_return_from_function != RETURN_SUCCESS)
+            {
+            /**
+            * Treat the case when the function to close the global structure ping data failed
+            */
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the global structure ping data failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Return failure to indicate the function to close the global structure ping data failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to close the global structure ping data succeeded
+            */
+            }
+
+        return (RETURN_FAILURE);
+        }
+
     /**
     * Getting the value of the arguments in the structure argument in the global structure ping data
     */
@@ -509,7 +603,14 @@ int main(int argc, char **argv)
         */
         }
 
-    printf("PING %s (%s) %u(%u) bytes of data.\n", cstc_glbl_ping_data.sstc_argument_.dbl_ptr_u8_additional_argument_str_[0], cstc_glbl_ping_data.u8_ip_address_str_, ICMP_PAYLOAD_SIZE, PACKET_SIZE);
+    if(cstc_glbl_ping_data.u16_ip_family_ == AF_INET)
+        {
+        printf("PING %s (%s) %u(%u) bytes of data.\n", cstc_glbl_ping_data.sstc_argument_.dbl_ptr_u8_additional_argument_str_[0], cstc_glbl_ping_data.u8_ip_address_str_, ICMP_PAYLOAD_SIZE, PACKET_SIZE);
+        }
+    else
+        {
+        printf("PING %s(%s) %u data bytes\n", cstc_glbl_ping_data.sstc_argument_.dbl_ptr_u8_additional_argument_str_[0], cstc_glbl_ping_data.u8_ip_address_str_, ICMP_PAYLOAD_SIZE);
+        }
 
     /**
     * Sending echo request to the destination

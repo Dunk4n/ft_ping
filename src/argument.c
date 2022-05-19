@@ -18,7 +18,9 @@ const   uint8_t *simple_options[SIMPLE_OPTION_NUMBER] =
     (uint8_t *) "-h",
     (uint8_t *) "-f",
     (uint8_t *) "-n",
-    (uint8_t *) "-q"
+    (uint8_t *) "-q",
+    (uint8_t *) "-4",
+    (uint8_t *) "-6",
     };
 
 const   uint8_t *argument_options[ARGUMENT_OPTION_NUMBER] =
