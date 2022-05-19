@@ -19,10 +19,14 @@ LIB_DIRECTORY	=	./libft/
 BUILD_DIRECTORY	=	build
 
 SRC_FILE_NAME	=	main.c			\
+					packet.c		\
+					signal.c		\
+					ping_data.c		\
+					argument.c		\
 
 SRC			=	$(addprefix $(SRC_DIRECTORY),$(SRC_FILE_NAME))
 
-NAME		=	ft_malcolm
+NAME		=	ft_ping
 
 OBJ			=	$(SRC:%.c=$(BUILD_DIRECTORY)/%.o)
 
@@ -31,7 +35,7 @@ CFLAGS		=	-I$(INC_DIRECTORY) -Wall -Wextra -Werror
 CDEBUG_FLAGS	=	-I$(INC_DIRECTORY) -Wall -Wextra -g -no-pie
 CDEBUG_FLAGS_FSANITIZE	=	-g -fsanitize=address -fsanitize=leak -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=undefined
 
-LDFLAGS		=	-L$(LIB_DIRECTORY) -lft
+LDFLAGS		=	-L$(LIB_DIRECTORY) -lft -lm
 
 all:	$(NAME)
 
