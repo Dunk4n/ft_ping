@@ -106,6 +106,12 @@ uint8_t Fu8__init_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_p
     ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_ipv6_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_ipv6_address_));
 
     /**
+    * Initialize the receve ip address structure of the structure ping data
+    */
+    ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_));
+    ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_));
+
+    /**
     * Initialize the string ip address of the structure ping data
     */
     u16_lcl_cnt = 0;
@@ -324,6 +330,12 @@ uint8_t Fu8__close_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_
     */
     ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_ipv4_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_ipv4_address_));
     ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_ipv6_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_ipv6_address_));
+
+    /**
+    * Reseting the receve ip address structure of the structure ping data
+    */
+    ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_));
+    ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_));
 
     /**
     * Reseting the string ip address of the structure ping data
@@ -851,14 +863,14 @@ uint8_t Fu8__get_value_from_ping_argument(volatile struct cstc_ping_data *ptr_cs
         * Treat the case when the number of destination argument is not one
         */
 
-        //TODO put error message we want just one destination to send ping
+        (void) Fv__help();
 
         /**
-        * Setting the flag argument error
+        * Setting the flag silent error error
         */
-        ptr_cstc_pssd_ping_data->sstc_argument_.u8_global_status_ |= SECOND_BIT;
+        ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
 
-        return (RETURN_SUCCESS);
+        return (RETURN_FAILURE);
         }
     else
         {
@@ -887,17 +899,32 @@ uint8_t Fu8__get_value_from_ping_argument(volatile struct cstc_ping_data *ptr_cs
         * Treat the case when the function to get the address information of the given destination failed
         */
 
-        #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in the function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the address information of the given destination failed\n", __FILE__, __func__, __LINE__);
-        #endif
+        switch(s32_lcl_return_from_function)
+            {
+            case(EAI_AGAIN):
+                fprintf(stderr, "ft_ping: %s: Temporary failure in name resolution\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
+                ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
+                return (RETURN_FAILURE);
+                break;
+            case(EAI_NONAME):
+                fprintf(stderr, "ft_ping: %s: Name or service not known\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
+                ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
+                return (RETURN_FAILURE);
+                break;
+            default:
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in the function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the address information of the given destination failed\n", __FILE__, __func__, __LINE__);
+                #endif
 
-        #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-        #endif
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
 
-        #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-        #endif
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+                break;
+            }
 
         /**
         * Return failure to indicate the function to get the address information of the given destination failed
@@ -1681,8 +1708,6 @@ uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             * Treat the case when the function to send the icmp v4 echo request to the destination failed
             */
 
-            //TODO error in -v
-            (void) perror(strerror(errno));
             switch(errno)
                 {
                 case(EINVAL):
@@ -1742,8 +1767,6 @@ uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             * Treat the case when the function to send the icmp v6 echo request to the destination failed
             */
 
-            //TODO error in -v
-            (void) perror(strerror(errno));
             switch(errno)
                 {
                 case(EINVAL):

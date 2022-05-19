@@ -130,6 +130,9 @@ struct cstc_ping_data
 
             // THIRD_BIT     Silent error               1 = Y / 0 = N
             uint8_t u8_global_status_silent_error_ : 1;
+
+            // FOURTH_BIT    Packet error               1 = Y / 0 = N
+            uint8_t u8_global_status_packet_error_ : 1;
             };
         };
 
@@ -137,7 +140,6 @@ struct cstc_ping_data
 
     union
     {
-        //struct sockaddr     estc_ip_address_;
         struct sockaddr_in  estc_ipv4_address_;
         struct sockaddr_in6 estc_ipv6_address_;
     };
@@ -160,6 +162,11 @@ struct cstc_ping_data
 
     ssize_t     estc_number_of_bytes_receve_;
     int32_t     s32_ttl_;
+    union
+    {
+        struct sockaddr_in  estc_receve_ipv4_address_;
+        struct sockaddr_in6 estc_receve_ipv6_address_;
+    };
 
     argument_t  sstc_argument_;
     };

@@ -60,7 +60,7 @@ suseconds_t get_time(void)
 void Fv__help(void)
     {
     ft_fprintf(STDERR_FILENO, "Usage\n");
-    ft_fprintf(STDERR_FILENO, "  ping [options] <destination>\n\n");
+    ft_fprintf(STDERR_FILENO, "  ft_ping [options] <destination>\n\n");
     ft_fprintf(STDERR_FILENO, "Options:\n");
     ft_fprintf(STDERR_FILENO, "  <destination>      dns name or ip address\n");
     ft_fprintf(STDERR_FILENO, "  -f                 flood ping\n");
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
         /**
         * Treat the case when function to load information from the argument to the structure argument in the global structure ping data succeeded
         */
-        } 
+        }
 
     /**
     * Check if argument error
@@ -302,7 +302,7 @@ int main(int argc, char **argv)
             */
             }
 
-        return (RETURN_SUCCESS);
+        return (RETURN_FAILURE);
         }
     else
         {
@@ -326,38 +326,20 @@ int main(int argc, char **argv)
         * Treat the case when the function to get the value of the arguments in the structure argument in the global structure ping data failed
         */
 
-        #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the value of the arguments in the structure argument in the global structure ping data failed\n", __FILE__, __func__, __LINE__);
-        #endif
+        if(cstc_glbl_ping_data.u8_global_status_silent_error_ == FALSE)
+            {
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the value of the arguments in the structure argument in the global structure ping data failed\n", __FILE__, __func__, __LINE__);
+            #endif
 
-        #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-        #endif
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
 
-        #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-        #endif
-
-        /**
-        * Return failure to indicate the function to get the value of the arguments in the structure argument in the global structure ping data failed
-        */
-        return (RETURN_FAILURE);
-        }
-    else
-        {
-        /**
-        * Treat the case when function to get the value of the arguments in the structure argument in the global structure ping data succeeded
-        */
-        }
-
-    /**
-    * Check if argument error
-    */
-    if((cstc_glbl_ping_data.sstc_argument_.u8_global_status_ & SECOND_BIT) != FALSE)
-        {
-        /**
-        * Treat the case when argument error
-        */
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+            }
 
         /**
         * Closing the global structure ping data
@@ -398,12 +380,15 @@ int main(int argc, char **argv)
             */
             }
 
-        return (RETURN_SUCCESS);
+        /**
+        * Return failure to indicate the function to get the value of the arguments in the structure argument in the global structure ping data failed
+        */
+        return (RETURN_FAILURE);
         }
     else
         {
         /**
-        * Treat the case when no argument error
+        * Treat the case when function to get the value of the arguments in the structure argument in the global structure ping data succeeded
         */
         }
 

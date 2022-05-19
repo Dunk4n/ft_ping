@@ -1,5 +1,495 @@
 #include "ft_ping.h"
 
+static uint16_t Fu16__reverse_endianness(uint16_t u16_pssd_value)
+    {
+    return((uint16_t) (((uint8_t *) &u16_pssd_value)[1]) | ((uint16_t) (((uint8_t *) &u16_pssd_value)[0]) << 8));
+    }
+
+//static uint32_t Fu32__reverse_endianness(uint32_t u32_pssd_value)
+//    {
+//    return((uint32_t) (((uint8_t *) &u32_pssd_value)[3]) | (((uint32_t) (((uint8_t *) &u32_pssd_value)[2])) << 8) | (((uint32_t) (((uint8_t *) &u32_pssd_value)[1])) << 16 | (((uint32_t) (((uint8_t *) &u32_pssd_value)[0])) << 24)));
+//    }
+
+void Fv__display_ipv4_icmp_packet(struct sockaddr_in *ptr_estc_pssd_ipv4_address, ssize_t estc_pssd_packet_number_of_bytes, int32_t s32_pssd_ttl, uint8_t *ptr_u8_pssd_packet)
+    {
+    /**
+    * Assertion of argument
+    */
+
+    /**
+    * Check if the ipv4 address is correctly pointing passed as an argument of the function
+    */
+    if(ptr_estc_pssd_ipv4_address == NULL)
+        {
+        /**
+        * Treat the case when the ipv4 address is not correctly pointing passed as an argument of the function
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the ipv4 address is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the ipv4 address is not correctly pointing passed as an argument of the function
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the ipv4 address is correctly pointing passed as an argument of the function
+        */
+        }
+
+    /**
+    * Check if the packet is correctly pointing passed as an argument of the function
+    */
+    if(ptr_u8_pssd_packet == NULL)
+        {
+        /**
+        * Treat the case when the packet is not correctly pointing passed as an argument of the function
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the packet is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the packet is not correctly pointing passed as an argument of the function
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the packet is correctly pointing passed as an argument of the function
+        */
+        }
+
+    /**
+    * Check if the packet is not an ipv4 packet
+    */
+    if(ptr_estc_pssd_ipv4_address->sin_family != AF_INET)
+        {
+        /**
+        * Treat the case when the packet is not an ipv4 packet
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the packet is not an ipv4 packet\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the packet is not an ipv4 packet
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the packet is an ipv4 packet
+        */
+        }
+
+    /**
+    * Creation of local variable
+    */
+    struct icmphdr *ptr_estc_lcl_icmp_header;
+    uint8_t         u8_lcl_sender_address_str[INET_V4_V6_ADDRSTRLEN];
+    uint8_t        *ptr_u8_lcl_return_from_function;
+
+    /**
+    * Initialization of local variable
+    */
+    ptr_estc_lcl_icmp_header        = NULL;
+    ptr_u8_lcl_return_from_function = NULL;
+
+    (void) ft_memset(u8_lcl_sender_address_str, 0, INET_V4_V6_ADDRSTRLEN);
+
+    /**
+    * Getting data from packet
+    */
+    ptr_estc_lcl_icmp_header = (void *) ptr_u8_pssd_packet;
+
+    /**
+    * Getting the sender address in ascii form
+    */
+    ptr_u8_lcl_return_from_function = NULL;
+    ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET, (void *) &(ptr_estc_pssd_ipv4_address->sin_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
+
+    /**
+    * Check if function to get the sender address in ascii form succeeded
+    */
+    if(ptr_u8_lcl_return_from_function == NULL)
+        {
+        /**
+        * Treat the case when the function to get the sender address in ascii form failed
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the sender address in ascii form failed\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the function to get the sender address in ascii form failed
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when function to get the sender address in ascii form succeeded
+        */
+        }
+
+    printf("\n==========  PACKET  ==========\n");
+    printf("IPV4  %s\n", u8_lcl_sender_address_str);
+    printf("      TTL: %d | SIZE: %ld\n\n", s32_pssd_ttl, estc_pssd_packet_number_of_bytes);
+
+    printf("ICMP  type: %u | code: %u\n", ptr_estc_lcl_icmp_header->type, ptr_estc_lcl_icmp_header->code);
+    printf("      ckecksum: %02x%02x\n", ((uint8_t *) &ptr_estc_lcl_icmp_header->checksum)[0], ((uint8_t *) &ptr_estc_lcl_icmp_header->checksum)[1]);
+    printf("      id: %u   | sequence: %u\n", Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.id), Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence));
+    printf("==============================\n\n");
+
+    return;
+    }
+
+void Fv__display_ipv6_icmp_packet(struct sockaddr_in6 *ptr_estc_pssd_ipv6_address, ssize_t estc_pssd_packet_number_of_bytes, int32_t s32_pssd_ttl, uint8_t *ptr_u8_pssd_packet)
+    {
+    /**
+    * Assertion of argument
+    */
+
+    /**
+    * Check if the ipv6 address is correctly pointing passed as an argument of the function
+    */
+    if(ptr_estc_pssd_ipv6_address == NULL)
+        {
+        /**
+        * Treat the case when the ipv6 address is not correctly pointing passed as an argument of the function
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the ipv6 address is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the ipv6 address is not correctly pointing passed as an argument of the function
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the ipv6 address is correctly pointing passed as an argument of the function
+        */
+        }
+
+    /**
+    * Check if the packet is correctly pointing passed as an argument of the function
+    */
+    if(ptr_u8_pssd_packet == NULL)
+        {
+        /**
+        * Treat the case when the packet is not correctly pointing passed as an argument of the function
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the packet is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the packet is not correctly pointing passed as an argument of the function
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the packet is correctly pointing passed as an argument of the function
+        */
+        }
+
+    /**
+    * Check if the packet is not an ipv6 packet
+    */
+    if(ptr_estc_pssd_ipv6_address->sin6_family != AF_INET6)
+        {
+        /**
+        * Treat the case when the packet is not an ipv6 packet
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the packet is not an ipv6 packet\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the packet is not an ipv6 packet
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the packet is an ipv6 packet
+        */
+        }
+
+    /**
+    * Creation of local variable
+    */
+    struct icmphdr *ptr_estc_lcl_icmp_header;
+    uint8_t         u8_lcl_sender_address_str[INET_V4_V6_ADDRSTRLEN];
+    uint8_t        *ptr_u8_lcl_return_from_function;
+
+    /**
+    * Initialization of local variable
+    */
+    ptr_estc_lcl_icmp_header        = NULL;
+    ptr_u8_lcl_return_from_function = NULL;
+
+    (void) ft_memset(u8_lcl_sender_address_str, 0, INET_V4_V6_ADDRSTRLEN);
+
+    /**
+    * Getting data from packet
+    */
+    ptr_estc_lcl_icmp_header = (void *) ptr_u8_pssd_packet;
+
+    /**
+    * Getting the sender address in ascii form
+    */
+    ptr_u8_lcl_return_from_function = NULL;
+    ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET6, (void *) &(ptr_estc_pssd_ipv6_address->sin6_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
+
+    /**
+    * Check if function to get the sender address in ascii form succeeded
+    */
+    if(ptr_u8_lcl_return_from_function == NULL)
+        {
+        /**
+        * Treat the case when the function to get the sender address in ascii form failed
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the sender address in ascii form failed\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the function to get the sender address in ascii form failed
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when function to get the sender address in ascii form succeeded
+        */
+        }
+
+    printf("\n==========  PACKET  ==========\n");
+    printf("IPV6  %s\n", u8_lcl_sender_address_str);
+    printf("      TTL: %d | SIZE: %ld\n\n", s32_pssd_ttl, estc_pssd_packet_number_of_bytes);
+
+    printf("ICMP  type: %u | code: %u\n", ptr_estc_lcl_icmp_header->type, ptr_estc_lcl_icmp_header->code);
+    printf("      ckecksum: %02x%02x\n", ((uint8_t *) &ptr_estc_lcl_icmp_header->checksum)[0], ((uint8_t *) &ptr_estc_lcl_icmp_header->checksum)[1]);
+    printf("      id: %u   | sequence: %u\n", Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.id), Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence));
+    printf("==============================\n\n");
+
+    return;
+    }
+
+void Fv__display_receved_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
+    {
+    /**
+    * Assertion of argument
+    */
+
+    /**
+    * Check if the structure ping data is correctly pointing passed as an argument of the function
+    */
+    if(ptr_cstc_pssd_ping_data == NULL)
+        {
+        /**
+        * Treat the case when the structure ping data is not correctly pointing passed as an argument of the function
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return to indicate the structure ping data is not correctly pointing passed as an argument of the function
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the structure ping data is correctly pointing passed as an argument of the function
+        */
+        }
+
+    /**
+    * Check if the structure ping data is not initialized
+    */
+    if(ptr_cstc_pssd_ping_data->u8_global_status_struct_init_ == FALSE)
+        {
+        /**
+        * Treat the case when the structure ping data is not initialized
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return failure to indicate the structure ping data is not initialized
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the structure ping data is initialized as expected
+        */
+        }
+
+    /**
+    * Check if the packet is correctly pointing passed as an argument of the function
+    */
+    if(ptr_u8_pssd_packet == NULL)
+        {
+        /**
+        * Treat the case when the packet is not correctly pointing passed as an argument of the function
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the packet is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Return failure to indicate the packet is not correctly pointing passed as an argument of the function
+        */
+        return;
+        }
+    else
+        {
+        /**
+        * Treat the case when the packet is correctly pointing passed as an argument of the function
+        */
+        }
+
+    /**
+    * Check if the receve packet is an ipv4 packet
+    */
+    if(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_.sin_family == AF_INET)
+        {
+        /**
+        * Treat the case when the receve packet is an ipv4 packet
+        */
+
+        (void) Fv__display_ipv4_icmp_packet((struct sockaddr_in *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_), ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, ptr_cstc_pssd_ping_data->s32_ttl_, ptr_u8_pssd_packet);
+        }
+    else
+        {
+        /**
+        * Treat the case when the receve packet is an ipv6 packet
+        */
+
+        (void) Fv__display_ipv6_icmp_packet((struct sockaddr_in6 *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_), ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, ptr_cstc_pssd_ping_data->s32_ttl_, ptr_u8_pssd_packet);
+        }
+
+    return;
+    }
+
 uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
     {
     /**
@@ -160,7 +650,6 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
         * Treat the case when the function to receve the pong message failed
         */
 
-        //TODO receve message failed
         #ifdef DEVELOPEMENT
         fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to receve the pong message failed\n", __FILE__, __func__, __LINE__);
         #endif
@@ -194,7 +683,6 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
         * Treat the case when the socket has been closed by the other side
         */
 
-        //TODO put good error
         #ifdef DEVELOPEMENT
         fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The socket has been closed by the other side\n", __FILE__, __func__, __LINE__);
         #endif
@@ -228,23 +716,15 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
         * Treat the case when the ip family of the receve message is not the same as the destination
         */
 
-        //TODO put good error
-        #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The receved packet is not from the same ip family than the destination\n", __FILE__, __func__, __LINE__);
-        #endif
+        ptr_cstc_pssd_ping_data->u8_global_status_packet_error_ = TRUE;
+        //TODO -v
 
-        #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-        #endif
-
-        #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-        #endif
+        fprintf(stderr, "The receved packet is not from the same ip family than the destination\n");
 
         /**
-        * Return failure to indicate the ip family of the receve message is not the same as the destination
+        * Return to indicate the ip family of the receve message is not the same as the destination
         */
-        return (RETURN_FAILURE);
+        return (RETURN_SUCCESS);
         }
     else
         {
@@ -263,30 +743,22 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
                 * Treat the case when the ip address of the received message is not the same as the destination
                 */
 
-                //TODO put good error
-                #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The ip of the receved packet is not the same than the destination ip\n", __FILE__, __func__, __LINE__);
-                #endif
+                ptr_cstc_pssd_ping_data->u8_global_status_packet_error_ = TRUE;
+        //TODO -v
 
-                #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-                #endif
-
-                #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-                #endif
+                fprintf(stderr, "The ip of the receved packet is not the same than the destination ip\n");
 
                 /**
-                * Return failure to indicate the ip address of the received message is not the same as the destination
+                * Return to indicate the ip address of the received message is not the same as the destination
                 */
-                return (RETURN_FAILURE);
+                return (RETURN_SUCCESS);
                 }
             else
                 {
                 /**
                 * Treat the case when the ip address of the received message is the same as the destination
                 */
-                } 
+                }
             }
         else
             {
@@ -299,23 +771,15 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
                 * Treat the case when the ip address of the received message is not the same as the destination
                 */
 
-                //TODO put good error
-                #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The ip of the receved packet is not the same than the destination ip\n", __FILE__, __func__, __LINE__);
-                #endif
+                ptr_cstc_pssd_ping_data->u8_global_status_packet_error_ = TRUE;
+        //TODO -v
 
-                #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-                #endif
-
-                #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-                #endif
+                fprintf(stderr, "The ip of the receved packet is not the same than the destination ip\n");
 
                 /**
-                * Return failure to indicate the ip address of the received message is not the same as the destination
+                * Return to indicate the ip address of the received message is not the same as the destination
                 */
-                return (RETURN_FAILURE);
+                return (RETURN_SUCCESS);
                 }
             else
                 {
@@ -327,6 +791,15 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
         }
 
     ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_ = estc_lcl_number_of_bytes_receve;
+
+    if(ptr_cstc_pssd_ping_data->u16_ip_family_ == AF_INET)
+        {
+        ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_ = *((struct sockaddr_in *) &estc_lcl_ipv6_address);
+        }
+    else
+        {
+        ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_ = *((struct sockaddr_in6 *) &estc_lcl_ipv6_address);
+        }
 
     /**
     * Searching the time to live value
@@ -559,16 +1032,6 @@ static uint8_t Fu8__update_ping_rtt_value(volatile struct cstc_ping_data *ptr_cs
     return (RETURN_SUCCESS);
     }
 
-uint16_t Fu16__reverse_endianness(uint16_t u16_pssd_value)
-    {
-    return((uint16_t) (((uint8_t *) &u16_pssd_value)[1]) | ((uint16_t) (((uint8_t *) &u16_pssd_value)[0]) << 8));
-    }
-
-uint32_t Fu32__reverse_endianness(uint32_t u32_pssd_value)
-    {
-    return((uint32_t) (((uint8_t *) &u32_pssd_value)[3]) | (((uint32_t) (((uint8_t *) &u32_pssd_value)[2])) << 8) | (((uint32_t) (((uint8_t *) &u32_pssd_value)[1])) << 16 | (((uint32_t) (((uint8_t *) &u32_pssd_value)[0])) << 24)));
-    }
-
 static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
     {
     /**
@@ -705,7 +1168,7 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
     * Getting the sender address in ascii form
     */
     ptr_u8_lcl_return_from_function = NULL;
-    ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET, (void *) &(ptr_cstc_pssd_ping_data->estc_ipv4_address_.sin_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
+    ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET, (void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_.sin_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
 
     /**
     * Check if function to get the sender address in ascii form succeeded
@@ -1018,7 +1481,7 @@ static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *p
     * Getting the sender address in ascii form
     */
     ptr_u8_lcl_return_from_function = NULL;
-    ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET6, (void *) &(ptr_cstc_pssd_ping_data->estc_ipv6_address_.sin6_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
+    ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET6, (void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_.sin6_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
 
     /**
     * Check if function to get the sender address in ascii form succeeded
@@ -1281,6 +1744,18 @@ uint8_t Fu8__receve_pong(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data
     while(TRUE)
         {
         /**
+        * Reseting the receve ip address structure of the structure ping data
+        */
+        ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_));
+        ft_memset((void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_), 0, sizeof(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_));
+
+        /**
+        * Reseting the packet receve information of the structure ping data
+        */
+        ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_ = 0;
+        ptr_cstc_pssd_ping_data->s32_ttl_                     = 0;
+
+        /**
         * Getting packet from destination
         */
         u8_lcl_return_from_function = RETURN_FAILURE;
@@ -1319,98 +1794,116 @@ uint8_t Fu8__receve_pong(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data
             */
             }
 
+        (void) Fv__display_receved_packet(ptr_cstc_pssd_ping_data, u8_lcl_packet);
+
         /**
-        * Check if the actual protocol is ip v4
+        * Check if the receved packet have an error
         */
-        if(ptr_cstc_pssd_ping_data->u16_ip_family_ == AF_INET)
+        if(ptr_cstc_pssd_ping_data->u8_global_status_packet_error_ == FALSE)
             {
             /**
-            * Treat the case when the actual protocol is ip v4
+            * Treat the case when the receved packet have an error
             */
 
             /**
-            * Checking the ipv4 reply packet
+            * Check if the actual protocol is ip v4
             */
-            u8_lcl_return_from_function = RETURN_FAILURE;
-            u8_lcl_return_from_function = Fu8__checking_reply_packet_ipv4(ptr_cstc_pssd_ping_data, u8_lcl_packet);
-
-            /**
-            * Check if function to check the ipv4 reply packet succeeded
-            */
-            if(u8_lcl_return_from_function != RETURN_SUCCESS)
+            if(ptr_cstc_pssd_ping_data->u16_ip_family_ == AF_INET)
                 {
                 /**
-                * Treat the case when the function to check the ipv4 reply packet failed
+                * Treat the case when the actual protocol is ip v4
                 */
-
-                #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to check the ipv4 reply packet failed\n", __FILE__, __func__, __LINE__);
-                #endif
-
-                #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-                #endif
-
-                #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-                #endif
 
                 /**
-                * Return failure to indicate the function to check the ipv4 reply packet failed
+                * Checking the ipv4 reply packet
                 */
-                return (RETURN_FAILURE);
+                u8_lcl_return_from_function = RETURN_FAILURE;
+                u8_lcl_return_from_function = Fu8__checking_reply_packet_ipv4(ptr_cstc_pssd_ping_data, u8_lcl_packet);
+
+                /**
+                * Check if function to check the ipv4 reply packet succeeded
+                */
+                if(u8_lcl_return_from_function != RETURN_SUCCESS)
+                    {
+                    /**
+                    * Treat the case when the function to check the ipv4 reply packet failed
+                    */
+
+                    #ifdef DEVELOPEMENT
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to check the ipv4 reply packet failed\n", __FILE__, __func__, __LINE__);
+                    #endif
+
+                    #ifdef DEMO
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                    #endif
+
+                    #ifdef PRODUCTION
+                    fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                    #endif
+
+                    /**
+                    * Return failure to indicate the function to check the ipv4 reply packet failed
+                    */
+                    return (RETURN_FAILURE);
+                    }
+                else
+                    {
+                    /**
+                    * Treat the case when function to check the ipv4 reply packet succeeded
+                    */
+                    }
                 }
             else
                 {
                 /**
-                * Treat the case when function to check the ipv4 reply packet succeeded
+                * Treat the case when the actual protocol is ip v6
                 */
+
+                /**
+                * Checking the ipv6 reply packet
+                */
+                u8_lcl_return_from_function = RETURN_FAILURE;
+                u8_lcl_return_from_function = Fu8__checking_reply_packet_ipv6(ptr_cstc_pssd_ping_data, u8_lcl_packet);
+
+                /**
+                * Check if function to check the ipv6 reply packet succeeded
+                */
+                if(u8_lcl_return_from_function != RETURN_SUCCESS)
+                    {
+                    /**
+                    * Treat the case when the function to check the ipv6 reply packet failed
+                    */
+
+                    #ifdef DEVELOPEMENT
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to check the ipv6 reply packet failed\n", __FILE__, __func__, __LINE__);
+                    #endif
+
+                    #ifdef DEMO
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                    #endif
+
+                    #ifdef PRODUCTION
+                    fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                    #endif
+
+                    /**
+                    * Return failure to indicate the function to check the ipv6 reply packet failed
+                    */
+                    return (RETURN_FAILURE);
+                    }
+                else
+                    {
+                    /**
+                    * Treat the case when function to check the ipv6 reply packet succeeded
+                    */
+                    }
                 }
             }
         else
             {
             /**
-            * Treat the case when the actual protocol is ip v6
+            * Treat the case when the receved packet have no error
             */
-
-            /**
-            * Checking the ipv6 reply packet
-            */
-            u8_lcl_return_from_function = RETURN_FAILURE;
-            u8_lcl_return_from_function = Fu8__checking_reply_packet_ipv6(ptr_cstc_pssd_ping_data, u8_lcl_packet);
-
-            /**
-            * Check if function to check the ipv6 reply packet succeeded
-            */
-            if(u8_lcl_return_from_function != RETURN_SUCCESS)
-                {
-                /**
-                * Treat the case when the function to check the ipv6 reply packet failed
-                */
-
-                #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to check the ipv6 reply packet failed\n", __FILE__, __func__, __LINE__);
-                #endif
-
-                #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-                #endif
-
-                #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-                #endif
-
-                /**
-                * Return failure to indicate the function to check the ipv6 reply packet failed
-                */
-                return (RETURN_FAILURE);
-                }
-            else
-                {
-                /**
-                * Treat the case when function to check the ipv6 reply packet succeeded
-                */
-                }
             }
         }
 
