@@ -27,6 +27,7 @@
 # define DEVELOPEMENT
 # define RETURN_FAILURE (1)
 # define RETURN_SUCCESS (0)
+# define RETURN_NOT_FAILURE_BUT_NOT_SUCCESS (2)
 # define ARGUMENT_CONTINUE (0)
 # define ARGUMENT_ERROR (1)
 # define ARGUMENT_NO_CONTINUE (2)
@@ -110,13 +111,19 @@ void Fv__help(void);
 
 # define INET_V4_V6_ADDRSTRLEN ((INET6_ADDRSTRLEN > INET_ADDRSTRLEN) ? (INET6_ADDRSTRLEN + 1) : (INET_ADDRSTRLEN + 1))
 
-# define IP_HDR_SIZE            20
+# define IP_HDR_SIZE            (20)
 # define ICMP_HDR_SIZE          ICMP_MINLEN
-# define ICMP_PAYLOAD_SIZE      56
+# define ICMP_PAYLOAD_SIZE      (56)
 # define PACKET_SIZE            (IP_HDR_SIZE + ICMP_HDR_SIZE + ICMP_PAYLOAD_SIZE)
-# define ALIGN_TIMESTAMP        4
+# define ALIGN_TIMESTAMP        (4)
 
 # define FT_PING_NUMBER_OF_SECONDS_BETWEEN_PING (1)
+
+# define ROOT_USER (0)
+
+# define ONE_SECOND_IN_MICROSECOND (1000000)
+//# define FLOOD_WAIT (1000000)
+# define FLOOD_WAIT (3000)
 
 struct cstc_ping_data
     {

@@ -91,12 +91,18 @@ int main(int argc, char **argv)
     /**
     * Creation of local variable
     */
-    uint8_t  u8_lcl_return_from_function;
-    void    *ptr_vd_lcl_return_from_signal;
+    suseconds_t  estc_lcl_actual_time;
+    suseconds_t  estc_lcl_last_ping_time;
+    suseconds_t  estc_lcl_wait_time;
+    uint8_t      u8_lcl_return_from_function;
+    void        *ptr_vd_lcl_return_from_signal;
 
     /**
     * Initialization of local variable
     */
+    estc_lcl_actual_time          = 0;
+    estc_lcl_last_ping_time       = 0;
+    estc_lcl_wait_time            = 0;
     ptr_vd_lcl_return_from_signal = SIG_ERR;
     u8_lcl_return_from_function   = RETURN_FAILURE;
 
@@ -612,35 +618,9 @@ int main(int argc, char **argv)
         printf("PING %s(%s) %u data bytes\n", cstc_glbl_ping_data.sstc_argument_.dbl_ptr_u8_additional_argument_str_[0], cstc_glbl_ping_data.u8_ip_address_str_, ICMP_PAYLOAD_SIZE);
         }
 
-    /**
-    * Sending echo request to the destination
-    */
-    u8_lcl_return_from_function = RETURN_FAILURE;
-    u8_lcl_return_from_function = Fu8__send_ping(&cstc_glbl_ping_data);
-
-    /**
-    * Check if function to send echo request to the destination succeeded
-    */
-    if(u8_lcl_return_from_function != RETURN_SUCCESS)
+    if((getuid() != ROOT_USER) && (cstc_glbl_ping_data.sstc_argument_.ptr_u8_simple_options_[FLOOD] != FALSE))
         {
-        /**
-        * Treat the case when the function to send echo request to the destination failed
-        */
-
-        if(cstc_glbl_ping_data.u8_global_status_silent_error_ == FALSE)
-            {
-            #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to send echo request to the destination failed\n", __FILE__, __func__, __LINE__);
-            #endif
-
-            #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-            #endif
-
-            #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-            #endif
-            }
+        fprintf(stderr, "ft_ping: cannot flood; minimal interval allowed for user is 200ms\n");
 
         /**
         * Closing the global structure ping data
@@ -686,59 +666,155 @@ int main(int argc, char **argv)
         */
         return (RETURN_FAILURE);
         }
+
+    /**
+    * Check if the flood option is set
+    */
+    if(cstc_glbl_ping_data.sstc_argument_.ptr_u8_simple_options_[FLOOD] != FALSE)
+        {
+        /**
+        * Treat the case when the flood option is set
+        */
+
+        estc_lcl_wait_time = FLOOD_WAIT;
+        }
     else
         {
         /**
-        * Treat the case when function to send echo request to the destination succeeded
+        * Treat the case when the flood option is not set
         */
+
+        estc_lcl_wait_time = ONE_SECOND_IN_MICROSECOND;
         }
 
-    (void) alarm(FT_PING_NUMBER_OF_SECONDS_BETWEEN_PING);
-
-    /**
-    * Receving icmp echo reply from destinamtion
-    */
-    u8_lcl_return_from_function = RETURN_FAILURE;
-    u8_lcl_return_from_function = Fu8__receve_pong(&cstc_glbl_ping_data);
-
-    /**
-    * Check if function to receve icmp echo reply from destinamtion succeeded
-    */
-    if(u8_lcl_return_from_function != RETURN_SUCCESS)
+    estc_lcl_actual_time    = 0;
+    estc_lcl_last_ping_time = 0;
+    while(TRUE)
         {
         /**
-        * Treat the case when the function to receve icmp echo reply from destinamtion failed
+        * Getting the actual time
         */
-
-        #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to receve icmp echo reply from destinamtion failed\n", __FILE__, __func__, __LINE__);
-        #endif
-
-        #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-        #endif
-
-        #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-        #endif
+        estc_lcl_actual_time = get_time();
 
         /**
-        * Closing the global structure ping data
+        * Check if the time between two pings has passed
+        */
+        if(estc_lcl_actual_time >= (estc_lcl_last_ping_time + estc_lcl_wait_time))
+            {
+            /**
+            * Treat the case when the time between two pings has passed
+            */
+
+            /**
+            * Sending echo request to the destination
+            */
+            u8_lcl_return_from_function = RETURN_FAILURE;
+            u8_lcl_return_from_function = Fu8__send_ping(&cstc_glbl_ping_data);
+
+            /**
+            * Check if function to send echo request to the destination succeeded
+            */
+            if(u8_lcl_return_from_function != RETURN_SUCCESS)
+                {
+                /**
+                * Treat the case when the function to send echo request to the destination failed
+                */
+
+                if(cstc_glbl_ping_data.u8_global_status_silent_error_ == FALSE)
+                    {
+                    #ifdef DEVELOPEMENT
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to send echo request to the destination failed\n", __FILE__, __func__, __LINE__);
+                    #endif
+
+                    #ifdef DEMO
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                    #endif
+
+                    #ifdef PRODUCTION
+                    fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                    #endif
+                    }
+
+                /**
+                * Closing the global structure ping data
+                */
+                u8_lcl_return_from_function = RETURN_FAILURE;
+                u8_lcl_return_from_function = Fu8__close_cstc_ping_data(&cstc_glbl_ping_data);
+
+                /**
+                * Check if function to close the global structure ping data succeeded
+                */
+                if(u8_lcl_return_from_function != RETURN_SUCCESS)
+                    {
+                    /**
+                    * Treat the case when the function to close the global structure ping data failed
+                    */
+
+                    #ifdef DEVELOPEMENT
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the global structure ping data failed\n", __FILE__, __func__, __LINE__);
+                    #endif
+
+                    #ifdef DEMO
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                    #endif
+
+                    #ifdef PRODUCTION
+                    fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                    #endif
+
+                    /**
+                    * Return failure to indicate the function to close the global structure ping data failed
+                    */
+                    return (RETURN_FAILURE);
+                    }
+                else
+                    {
+                    /**
+                    * Treat the case when function to close the global structure ping data succeeded
+                    */
+                    }
+
+                /**
+                * Return failure to indicate the function to send echo request to the destination failed
+                */
+                return (RETURN_FAILURE);
+                }
+            else
+                {
+                /**
+                * Treat the case when function to send echo request to the destination succeeded
+                */
+                }
+
+            /**
+            * Getting the new last ping time
+            */
+            estc_lcl_last_ping_time = get_time();
+            }
+        else
+            {
+            /**
+            * Treat the case when the time between two pings has not passed
+            */
+            }
+
+        /**
+        * Receving icmp echo reply from destinamtion
         */
         u8_lcl_return_from_function = RETURN_FAILURE;
-        u8_lcl_return_from_function = Fu8__close_cstc_ping_data(&cstc_glbl_ping_data);
+        u8_lcl_return_from_function = Fu8__receve_pong(&cstc_glbl_ping_data);
 
         /**
-        * Check if function to close the global structure ping data succeeded
+        * Check if function to receve icmp echo reply from destinamtion succeeded
         */
         if(u8_lcl_return_from_function != RETURN_SUCCESS)
             {
             /**
-            * Treat the case when the function to close the global structure ping data failed
+            * Treat the case when the function to receve icmp echo reply from destinamtion failed
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the global structure ping data failed\n", __FILE__, __func__, __LINE__);
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to receve icmp echo reply from destinamtion failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
@@ -750,27 +826,55 @@ int main(int argc, char **argv)
             #endif
 
             /**
-            * Return failure to indicate the function to close the global structure ping data failed
+            * Closing the global structure ping data
+            */
+            u8_lcl_return_from_function = RETURN_FAILURE;
+            u8_lcl_return_from_function = Fu8__close_cstc_ping_data(&cstc_glbl_ping_data);
+
+            /**
+            * Check if function to close the global structure ping data succeeded
+            */
+            if(u8_lcl_return_from_function != RETURN_SUCCESS)
+                {
+                /**
+                * Treat the case when the function to close the global structure ping data failed
+                */
+
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the global structure ping data failed\n", __FILE__, __func__, __LINE__);
+                #endif
+
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
+
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+
+                /**
+                * Return failure to indicate the function to close the global structure ping data failed
+                */
+                return (RETURN_FAILURE);
+                }
+            else
+                {
+                /**
+                * Treat the case when function to close the global structure ping data succeeded
+                */
+                }
+
+            /**
+            * Return failure to indicate the function to receve icmp echo reply from destinamtion failed
             */
             return (RETURN_FAILURE);
             }
         else
             {
             /**
-            * Treat the case when function to close the global structure ping data succeeded
+            * Treat the case when function to receve icmp echo reply from destinamtion succeeded
             */
             }
-
-        /**
-        * Return failure to indicate the function to receve icmp echo reply from destinamtion failed
-        */
-        return (RETURN_FAILURE);
-        }
-    else
-        {
-        /**
-        * Treat the case when function to receve icmp echo reply from destinamtion succeeded
-        */
         }
 
     /**
@@ -811,77 +915,6 @@ int main(int argc, char **argv)
         * Treat the case when function to close the global structure ping data succeeded
         */
         }
-
-//    int ret = 0;
-//    //char *rep = NULL;
-//    //struct in6_addr ip;
-//    uint8_t str[INET6_ADDRSTRLEN];
-
-//    ret = inet_pton(AF_INET, argv[1], (void *) &ip);
-//    if(ret != 1)
-//        {
-//        printf("ret = %d\n", ret);
-//        return (1);
-//        }
-//    rep = (char *) inet_ntop(AF_INET, (void *) &ip, (char *) str, INET6_ADDRSTRLEN);
-//
-//    printf("ip = %u.%u.%u.%u\n", ip.s6_addr[0], ip.s6_addr[1], ip.s6_addr[2], ip.s6_addr[3]);
-//    printf("name = [%s] [%s]\n", str, rep);
-
-//    if(getuid() != 0)
-//        {
-//        printf("ERROR not root\n");
-//        return (1);
-//        }
-//
-//
-//   struct addrinfo hints;
-//   struct addrinfo *res = NULL;
-//
-//   char host[256];
-//   char serv[256];
-//
-//   memset(host, 0, sizeof(host));
-//   memset(serv, 0, sizeof(serv));
-//
-//   memset(&hints, 0, sizeof(struct addrinfo));
-//   hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
-//
-//    ret = getaddrinfo(argv[1], NULL, &hints, &res);
-//    if(ret != 0)
-//        {
-//        printf("ret = %d\n", ret);
-//        return (1);
-//        }
-//
-//    if(res->ai_addr->sa_family == AF_INET)
-//        {
-//        printf("addr type == AF_INET\n");
-//        printf("flag %u\n", res->ai_flags);
-//        printf("sock type %u\n", res->ai_socktype);
-//
-//        printf("%s\n", inet_ntop(AF_INET, (void *) &(((struct sockaddr_in *) res->ai_addr)->sin_addr), (char *) str, INET6_ADDRSTRLEN));
-//
-//        //((struct sockaddr_in *) res->ai_addr)->sin_addr.s_addr;
-//        }
-//    else if(res->ai_addr->sa_family == AF_INET6)
-//        {
-//        printf("addr type == AF_INET6\n");
-//        printf("flag %u\n", res->ai_flags);
-//
-//        printf("%s\n", inet_ntop(AF_INET6, (void *) &(((struct sockaddr_in6 *) res->ai_addr)->sin6_addr), (char *) str, INET6_ADDRSTRLEN));
-//
-//        //((struct sockaddr_in6 *) res->ai_addr)->sin6_addr.s6_addr;
-//        }
-//    else
-//        {
-//        printf("addr type == NULL\n");
-//        }
-//
-//    freeaddrinfo(res);
-//
-//    printf("\n\n");
-
 
     return (RETURN_SUCCESS);
     }

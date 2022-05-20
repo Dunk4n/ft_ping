@@ -1737,6 +1737,10 @@ uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
                     fprintf(stderr, "ft_ping: sendmsg: Invalid argument\n");
                     return (RETURN_SUCCESS);
                     break;
+                case(ENOBUFS):
+                    fprintf(stderr, "ft_ping: sendmsg: No buffer space available\n");
+                    return (RETURN_SUCCESS);
+                    break;
                 case(EACCES):
                     fprintf(stderr, "can not ping to breadcast\n");
                     ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
@@ -1827,6 +1831,11 @@ uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             * Treat the case when function to send the icmp v6 echo request to the destination succeeded
             */
             }
+        }
+
+    if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[FLOOD] != FALSE)
+        {
+        ft_printf(".");
         }
 
     /**
