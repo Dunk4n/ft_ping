@@ -21,6 +21,7 @@ const   uint8_t *simple_options[SIMPLE_OPTION_NUMBER] =
     (uint8_t *) "-q",
     (uint8_t *) "-4",
     (uint8_t *) "-6",
+    (uint8_t *) "-D",
     };
 
 const   uint8_t *argument_options[ARGUMENT_OPTION_NUMBER] =
@@ -34,7 +35,8 @@ const   uint8_t *argument_options[ARGUMENT_OPTION_NUMBER] =
     (uint8_t *) "-p",
     (uint8_t *) "-Q",
     (uint8_t *) "-S",
-    (uint8_t *) "-t"
+    (uint8_t *) "-t",
+    (uint8_t *) "-c",
     };
 
 static uint8_t Fu8__copying_string_to_allocated_string(uint8_t *ptr_u8_pssd_source_str, uint8_t **dbl_ptr_u8_pssd_destination_str)

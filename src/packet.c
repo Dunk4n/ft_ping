@@ -362,7 +362,7 @@ void Fv__display_ipv6_icmp_packet(struct sockaddr_in6 *ptr_estc_pssd_ipv6_addres
     return;
     }
 
-void Fv__display_receved_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
+void Fv__display_receved_packet(struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
     {
     /**
     * Assertion of argument
@@ -490,7 +490,7 @@ void Fv__display_receved_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_pi
     return;
     }
 
-uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
+uint8_t Fu8__getting_packet(struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
     {
     /**
     * Assertion of argument
@@ -598,20 +598,24 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
     /**
     * Creation of local variable
     */
-    ssize_t              estc_lcl_number_of_bytes_receve;
-    struct cmsghdr      *ptr_estc_lcl_cmsg;
-    struct iovec         estc_lcl_io_vector;
-    struct msghdr        estc_lcl_message;
-    uint8_t              u8_lcl_control_buffer[CMSG_SPACE(sizeof(uint8_t))];
-    uint8_t             *ptr_u8_lcl_ttl;
-    struct sockaddr_in6  estc_lcl_ipv6_address;
+    ssize_t                   estc_lcl_number_of_bytes_receve;
+    struct cmsghdr           *ptr_estc_lcl_cmsg;
+    struct iovec              estc_lcl_io_vector;
+    struct msghdr             estc_lcl_message;
+    struct sock_extended_err *ptr_estc_lcl_packet_error;
+    struct sockaddr          *ptr_estc_lcl_error_return_address;
+    struct sockaddr_in6       estc_lcl_ipv6_address;
+    uint8_t                   u8_lcl_control_buffer[CMSG_SPACE(sizeof(uint8_t)) + CMSG_SPACE(sizeof(struct sock_extended_err)) + CMSG_SPACE(sizeof(struct sockaddr_in6))];
+    uint8_t                  *ptr_u8_lcl_ttl;
 
     /**
     * Initialization of local variable
     */
-    estc_lcl_number_of_bytes_receve = -1;
-    ptr_estc_lcl_cmsg               = NULL;
-    ptr_u8_lcl_ttl                  = NULL;
+    estc_lcl_number_of_bytes_receve   = -1;
+    ptr_estc_lcl_cmsg                 = NULL;
+    ptr_estc_lcl_error_return_address = NULL;
+    ptr_estc_lcl_packet_error         = NULL;
+    ptr_u8_lcl_ttl                    = NULL;
 
     (void) ft_memset(&estc_lcl_message, 0, sizeof(estc_lcl_message));
     (void) ft_memset(&estc_lcl_io_vector, 0, sizeof(estc_lcl_io_vector));
@@ -636,6 +640,11 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
     estc_lcl_message.msg_flags      = 0;
 
     /**
+    * Setting packet error data not set
+    */
+    ptr_cstc_pssd_ping_data->u8_global_status_packet_error_data_ = FALSE;
+
+    /**
     * Receving the pong message
     */
     estc_lcl_number_of_bytes_receve = -1;
@@ -655,28 +664,106 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
             return (RETURN_NOT_FAILURE_BUT_NOT_SUCCESS);
             }
 
-        #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to receve the pong message failed\n", __FILE__, __func__, __LINE__);
-        #endif
-
-        #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-        #endif
-
-        #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-        #endif
+        /**
+        * Receving the pong error message
+        */
+        estc_lcl_number_of_bytes_receve = -1;
+        estc_lcl_number_of_bytes_receve = recvmsg(ptr_cstc_pssd_ping_data->s32_socket_, &estc_lcl_message, MSG_DONTWAIT | MSG_ERRQUEUE);
 
         /**
-        * Return failure to indicate the function to receve the pong message failed
+        * Check if function to receve the pong error message succeeded
         */
-        return (RETURN_FAILURE);
+        if(estc_lcl_number_of_bytes_receve < 0)
+            {
+            /**
+            * Treat the case when the function to receve the pong error message failed
+            */
+
+            if((errno == EAGAIN) || (errno == EWOULDBLOCK))
+                {
+                return (RETURN_NOT_FAILURE_BUT_NOT_SUCCESS);
+                }
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to receve the pong error message failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Return failure to indicate the function to receve the pong error message failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to receve the pong error message succeeded
+            */
+            }
+
+        /**
+        * Searching for error
+        */
+        ptr_estc_lcl_cmsg = CMSG_FIRSTHDR(&estc_lcl_message);
+        while(ptr_estc_lcl_cmsg != NULL)
+            {
+            if(((ptr_estc_lcl_cmsg->cmsg_level == IPPROTO_IP) && (ptr_estc_lcl_cmsg->cmsg_type == IP_RECVERR)) || ((ptr_estc_lcl_cmsg->cmsg_level == IPPROTO_IPV6) && (ptr_estc_lcl_cmsg->cmsg_type == IPV6_RECVERR)))
+                {
+                ptr_estc_lcl_packet_error = NULL;
+                ptr_estc_lcl_packet_error = (struct sock_extended_err *) CMSG_DATA(ptr_estc_lcl_cmsg);
+
+                if((ptr_estc_lcl_packet_error != NULL) && ((ptr_estc_lcl_packet_error->ee_origin == SO_EE_ORIGIN_ICMP) || (ptr_estc_lcl_packet_error->ee_origin == SO_EE_ORIGIN_ICMP6)))
+                    {
+                    ptr_cstc_pssd_ping_data->estc_error_packet_data_ = *ptr_estc_lcl_packet_error;
+
+                    ptr_estc_lcl_error_return_address = SO_EE_OFFENDER(ptr_estc_lcl_packet_error);
+
+                    if(ptr_estc_lcl_error_return_address->sa_family == AF_INET)
+                        {
+                        ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_ = *((struct sockaddr_in *) ptr_estc_lcl_error_return_address);
+                        }
+                    else if(ptr_estc_lcl_error_return_address->sa_family == AF_INET6)
+                        {
+                        ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_ = *((struct sockaddr_in6 *) ptr_estc_lcl_error_return_address);
+                        }
+                    else
+                        {
+                        ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_.sin_family = AF_UNSPEC;
+                        }
+
+                    ptr_estc_lcl_error_return_address = NULL;
+
+                    /**
+                    * Setting packet error data set
+                    */
+                    ptr_cstc_pssd_ping_data->u8_global_status_packet_error_data_ = TRUE;
+                    }
+                }
+
+            ptr_estc_lcl_cmsg = CMSG_NXTHDR(&estc_lcl_message, ptr_estc_lcl_cmsg);
+            }
         }
     else
         {
         /**
         * Treat the case when function to receve the pong message succeeded
         */
+
+        if(ptr_cstc_pssd_ping_data->u16_ip_family_ == AF_INET)
+            {
+            ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_ = *((struct sockaddr_in *) &estc_lcl_ipv6_address);
+            }
+        else
+            {
+            ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_ = *((struct sockaddr_in6 *) &estc_lcl_ipv6_address);
+            }
         }
 
     /**
@@ -722,7 +809,6 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
         */
 
         ptr_cstc_pssd_ping_data->u8_global_status_packet_error_ = TRUE;
-        //TODO -v
 
         fprintf(stderr, "The receved packet is not from the same ip family than the destination\n");
 
@@ -797,15 +883,6 @@ uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_d
 
     ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_ = estc_lcl_number_of_bytes_receve;
 
-    if(ptr_cstc_pssd_ping_data->u16_ip_family_ == AF_INET)
-        {
-        ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_ = *((struct sockaddr_in *) &estc_lcl_ipv6_address);
-        }
-    else
-        {
-        ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_ = *((struct sockaddr_in6 *) &estc_lcl_ipv6_address);
-        }
-
     /**
     * Searching the time to live value
     */
@@ -847,7 +924,7 @@ static const uint8_t   *u8_glbl_icmp_v6_responses_str[] =
 {
     [ICMPV6_DEST_UNREACH] = (uint8_t *) "Destination Unreachable",
     [ICMPV6_PKT_TOOBIG]   = (uint8_t *) "Packet too big",
-    [ICMPV6_TIME_EXCEED]  = (uint8_t *) "Time exceeded",
+    [ICMPV6_TIME_EXCEED]  = (uint8_t *) "Time exceeded: Hop limit",
     [ICMPV6_PARAMPROB]    = (uint8_t *) "Parameter problem",
     [ICMPV6_ECHO_REQUEST]    = (uint8_t *) "Echo request",
     [ICMPV6_ECHO_REPLY]    = (uint8_t *) "Echo reply",
@@ -931,7 +1008,7 @@ static uint8_t *Fptr_u8__get_icmp_v6_responses_str(uint32_t u32_pssd_value)
     return (NULL);
     }
 
-static uint8_t Fu8__update_ping_rtt_value(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, suseconds_t estc_pssd_rtt)
+static uint8_t Fu8__update_ping_rtt_value(struct cstc_ping_data *ptr_cstc_pssd_ping_data, suseconds_t estc_pssd_rtt)
     {
     /**
     * Assertion of argument
@@ -1037,7 +1114,47 @@ static uint8_t Fu8__update_ping_rtt_value(volatile struct cstc_ping_data *ptr_cs
     return (RETURN_SUCCESS);
     }
 
-static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
+static void Fv__display_timestamp(void)
+    {
+    /**
+    * Creation of local variable
+    */
+    int32_t        s32_lcl_return_from_function;
+    struct timeval estc_lcl_time_value;
+
+    /**
+    * Initialization of local variable
+    */
+    s32_lcl_return_from_function = -1;
+
+    /**
+    * Getting the actual time of the day
+    */
+    s32_lcl_return_from_function = RETURN_FAILURE;
+    s32_lcl_return_from_function = gettimeofday(&estc_lcl_time_value, NULL);
+
+    /**
+    * Check if function to get the actual time of the day succeeded
+    */
+    if(s32_lcl_return_from_function != RETURN_SUCCESS)
+        {
+        /**
+        * Treat the case when the function to get the actual time of the day failed
+        */
+
+        printf("[0.0] ");
+        }
+    else
+        {
+        /**
+        * Treat the case when function to get the actual time of the day succeeded
+        */
+
+        printf("[%" PRIu64 ".%" PRIu64 "] ", estc_lcl_time_value.tv_sec, estc_lcl_time_value.tv_usec);
+        }
+    }
+
+static uint8_t Fu8__checking_reply_packet_ipv4(struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
     {
     /**
     * Assertion of argument
@@ -1145,21 +1262,21 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
     /**
     * Creation of local variable
     */
-    struct icmphdr *ptr_estc_lcl_icmp_header;
-    struct timeval *ptr_estc_lcl_time_value;
-    suseconds_t     estc_lcl_rtt;
-    uint8_t         u8_lcl_return_from_function;
-    uint8_t         u8_lcl_sender_address_str[INET_V4_V6_ADDRSTRLEN];
-    uint8_t        *ptr_u8_lcl_return_from_function;
+    struct icmphdr  *ptr_estc_lcl_icmp_header;
+    struct timeval  *ptr_estc_lcl_time_value;
+    suseconds_t      estc_lcl_rtt;
+    uint8_t          u8_lcl_return_from_function;
+    uint8_t          u8_lcl_sender_address_str[INET_V4_V6_ADDRSTRLEN];
+    uint8_t         *ptr_u8_lcl_return_from_function;
 
     /**
     * Initialization of local variable
     */
-    estc_lcl_rtt                    = 0;
-    ptr_estc_lcl_icmp_header        = NULL;
-    ptr_estc_lcl_time_value         = NULL;
-    ptr_u8_lcl_return_from_function = NULL;
-    u8_lcl_return_from_function     = RETURN_FAILURE;
+    estc_lcl_rtt                      = 0;
+    ptr_estc_lcl_icmp_header          = NULL;
+    ptr_estc_lcl_time_value           = NULL;
+    ptr_u8_lcl_return_from_function   = NULL;
+    u8_lcl_return_from_function       = RETURN_FAILURE;
 
     ft_memset(u8_lcl_sender_address_str, 0, INET_V4_V6_ADDRSTRLEN);
 
@@ -1167,55 +1284,61 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
     * Getting data from packet
     */
     ptr_estc_lcl_icmp_header = (void *) ptr_u8_pssd_packet;
-    ptr_estc_lcl_time_value  = (void *) (ptr_u8_pssd_packet + ICMP_HDR_SIZE + ALIGN_TIMESTAMP);
-
-    /**
-    * Getting the sender address in ascii form
-    */
-    ptr_u8_lcl_return_from_function = NULL;
-    ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET, (void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_.sin_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
-
-    /**
-    * Check if function to get the sender address in ascii form succeeded
-    */
-    if(ptr_u8_lcl_return_from_function == NULL)
-        {
-        /**
-        * Treat the case when the function to get the sender address in ascii form failed
-        */
-
-        #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the sender address in ascii form failed\n", __FILE__, __func__, __LINE__);
-        #endif
-
-        #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-        #endif
-
-        #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-        #endif
-
-        /**
-        * Return failure to indicate the function to get the sender address in ascii form failed
-        */
-        return (RETURN_FAILURE);
-        }
-    else
-        {
-        /**
-        * Treat the case when function to get the sender address in ascii form succeeded
-        */
-        }
+    ptr_estc_lcl_time_value  = (void *) (ptr_u8_pssd_packet + ICMP_HDR_SIZE);
 
     /**
     * Check if the icmp type is not echo reply
     */
-    if(ptr_estc_lcl_icmp_header->type != ICMP_ECHOREPLY)
+    if((ptr_cstc_pssd_ping_data->u8_global_status_packet_error_data_ == TRUE) && (ptr_cstc_pssd_ping_data->estc_error_packet_data_.ee_origin == SO_EE_ORIGIN_ICMP))
         {
         /**
         * Treat the case when the icmp type is not echo reply
         */
+
+        if(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_.sin_family == AF_INET)
+            {
+            /**
+            * Getting the sender address in ascii form
+            */
+            ptr_u8_lcl_return_from_function = NULL;
+            ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET, (void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_.sin_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
+
+            /**
+            * Check if function to get the sender address in ascii form succeeded
+            */
+            if(ptr_u8_lcl_return_from_function == NULL)
+                {
+                /**
+                * Treat the case when the function to get the sender address in ascii form failed
+                */
+
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the sender address in ascii form failed\n", __FILE__, __func__, __LINE__);
+                #endif
+
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
+
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+
+                /**
+                * Return failure to indicate the function to get the sender address in ascii form failed
+                */
+                return (RETURN_FAILURE);
+                }
+            else
+                {
+                /**
+                * Treat the case when function to get the sender address in ascii form succeeded
+                */
+                }
+            }
+
+        ptr_estc_lcl_icmp_header->type = ptr_cstc_pssd_ping_data->estc_error_packet_data_.ee_type;
+        ptr_estc_lcl_icmp_header->code = ptr_cstc_pssd_ping_data->estc_error_packet_data_.ee_code;
 
         if(ptr_estc_lcl_icmp_header->type == ICMP_ECHO)
             return (RETURN_SUCCESS);
@@ -1230,17 +1353,23 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
             if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[FLOOD] != FALSE)
                 {
                 ft_printf("\bE");
+                fsync(STDOUT_FILENO);
                 }
             else
                 {
-            if(ptr_estc_lcl_icmp_header->type < sizeof(u8_glbl_icmp_responses_str))
-                {
-                printf("From %s icmp_seq=%hu %s\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), Fptr_u8__get_icmp_responses_str(ptr_estc_lcl_icmp_header->type));
-                }
-            else
-                {
-                printf("From %s icmp_seq=%hu\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence));
-                }
+                if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[TIMESTAMP] != FALSE)
+                    {
+                    (void) Fv__display_timestamp();
+                    }
+
+                if(ptr_estc_lcl_icmp_header->type < sizeof(u8_glbl_icmp_responses_str))
+                    {
+                    printf("From %s icmp_seq=%hu %s\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), Fptr_u8__get_icmp_responses_str(ptr_estc_lcl_icmp_header->type));
+                    }
+                else
+                    {
+                    printf("From %s icmp_seq=%hu\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence));
+                    }
                 }
             }
 
@@ -1271,11 +1400,50 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
             return (RETURN_FAILURE);
             }
         }
-    else
+    else if(ptr_cstc_pssd_ping_data->u8_global_status_packet_error_data_ == FALSE)
         {
         /**
         * Treat the case when the icmp type is echo reply
         */
+
+        /**
+        * Getting the sender address in ascii form
+        */
+        ptr_u8_lcl_return_from_function = NULL;
+        ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET, (void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv4_address_.sin_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
+
+        /**
+        * Check if function to get the sender address in ascii form succeeded
+        */
+        if(ptr_u8_lcl_return_from_function == NULL)
+            {
+            /**
+            * Treat the case when the function to get the sender address in ascii form failed
+            */
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the sender address in ascii form failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Return failure to indicate the function to get the sender address in ascii form failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to get the sender address in ascii form succeeded
+            */
+            }
 
         /**
         * Getting the retour time of the echo reply
@@ -1287,9 +1455,15 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
             if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[FLOOD] != FALSE)
                 {
                 ft_printf("\b");
+                fsync(STDOUT_FILENO);
                 }
             else
                 {
+                if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[TIMESTAMP] != FALSE)
+                    {
+                    (void) Fv__display_timestamp();
+                    }
+
                 if(((double) estc_lcl_rtt) / 1000.0f < 1.0f)
                     {
                     printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.03f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
@@ -1375,7 +1549,7 @@ static uint8_t Fu8__checking_reply_packet_ipv4(volatile struct cstc_ping_data *p
     return (RETURN_SUCCESS);
     }
 
-static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
+static uint8_t Fu8__checking_reply_packet_ipv6(struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet)
     {
     /**
     * Assertion of argument
@@ -1505,55 +1679,61 @@ static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *p
     * Getting data from packet
     */
     ptr_estc_lcl_icmp_v6_header = (void *) ptr_u8_pssd_packet;
-    ptr_estc_lcl_time_value     = (void *) (ptr_u8_pssd_packet + ICMP_HDR_SIZE + ALIGN_TIMESTAMP);
-
-    /**
-    * Getting the sender address in ascii form
-    */
-    ptr_u8_lcl_return_from_function = NULL;
-    ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET6, (void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_.sin6_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
-
-    /**
-    * Check if function to get the sender address in ascii form succeeded
-    */
-    if(ptr_u8_lcl_return_from_function == NULL)
-        {
-        /**
-        * Treat the case when the function to get the sender address in ascii form failed
-        */
-
-        #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the sender address in ascii form failed\n", __FILE__, __func__, __LINE__);
-        #endif
-
-        #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-        #endif
-
-        #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
-        #endif
-
-        /**
-        * Return failure to indicate the function to get the sender address in ascii form failed
-        */
-        return (RETURN_FAILURE);
-        }
-    else
-        {
-        /**
-        * Treat the case when function to get the sender address in ascii form succeeded
-        */
-        }
+    ptr_estc_lcl_time_value     = (void *) (ptr_u8_pssd_packet + ICMP_HDR_SIZE);
 
     /**
     * Check if the icmp type is not echo reply
     */
-    if(ptr_estc_lcl_icmp_v6_header->icmp6_type != ICMPV6_ECHO_REPLY)
+    if((ptr_cstc_pssd_ping_data->u8_global_status_packet_error_data_ == TRUE) && (ptr_cstc_pssd_ping_data->estc_error_packet_data_.ee_origin == SO_EE_ORIGIN_ICMP6))
         {
         /**
         * Treat the case when the icmp type is not echo reply
         */
+
+        if(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_.sin6_family == AF_INET6)
+            {
+            /**
+            * Getting the sender address in ascii form
+            */
+            ptr_u8_lcl_return_from_function = NULL;
+            ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET6, (void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_.sin6_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
+
+            /**
+            * Check if function to get the sender address in ascii form succeeded
+            */
+            if(ptr_u8_lcl_return_from_function == NULL)
+                {
+                /**
+                * Treat the case when the function to get the sender address in ascii form failed
+                */
+
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the sender address in ascii form failed\n", __FILE__, __func__, __LINE__);
+                #endif
+
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
+
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+
+                /**
+                * Return failure to indicate the function to get the sender address in ascii form failed
+                */
+                return (RETURN_FAILURE);
+                }
+            else
+                {
+                /**
+                * Treat the case when function to get the sender address in ascii form succeeded
+                */
+                }
+            }
+
+        ptr_estc_lcl_icmp_v6_header->icmp6_type = ptr_cstc_pssd_ping_data->estc_error_packet_data_.ee_type;
+        ptr_estc_lcl_icmp_v6_header->icmp6_code = ptr_cstc_pssd_ping_data->estc_error_packet_data_.ee_code;
 
         if(ptr_estc_lcl_icmp_v6_header->icmp6_type == ICMPV6_ECHO_REQUEST)
             return (RETURN_SUCCESS);
@@ -1568,9 +1748,15 @@ static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *p
             if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[FLOOD] != FALSE)
                 {
                 ft_printf("\bE");
+                fsync(STDOUT_FILENO);
                 }
             else
                 {
+                if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[TIMESTAMP] != FALSE)
+                    {
+                    (void) Fv__display_timestamp();
+                    }
+
                 if(ptr_estc_lcl_icmp_v6_header->icmp6_type < sizeof(u8_glbl_icmp_responses_str))
                     {
                     printf("From %s icmp_seq=%hu %s\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), Fptr_u8__get_icmp_v6_responses_str(ptr_estc_lcl_icmp_v6_header->icmp6_type));
@@ -1609,11 +1795,50 @@ static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *p
             return (RETURN_FAILURE);
             }
         }
-    else
+    else if(ptr_cstc_pssd_ping_data->u8_global_status_packet_error_data_ == FALSE)
         {
         /**
         * Treat the case when the icmp type is echo reply
         */
+
+        /**
+        * Getting the sender address in ascii form
+        */
+        ptr_u8_lcl_return_from_function = NULL;
+        ptr_u8_lcl_return_from_function = (uint8_t *) inet_ntop(AF_INET6, (void *) &(ptr_cstc_pssd_ping_data->estc_receve_ipv6_address_.sin6_addr), (char *) u8_lcl_sender_address_str, INET_V4_V6_ADDRSTRLEN);
+
+        /**
+        * Check if function to get the sender address in ascii form succeeded
+        */
+        if(ptr_u8_lcl_return_from_function == NULL)
+            {
+            /**
+            * Treat the case when the function to get the sender address in ascii form failed
+            */
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the sender address in ascii form failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Return failure to indicate the function to get the sender address in ascii form failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to get the sender address in ascii form succeeded
+            */
+            }
 
         /**
         * Getting the retour time of the echo reply
@@ -1625,9 +1850,15 @@ static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *p
             if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[FLOOD] != FALSE)
                 {
                 ft_printf("\b");
+                fsync(STDOUT_FILENO);
                 }
             else
                 {
+                if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[TIMESTAMP] != FALSE)
+                    {
+                    (void) Fv__display_timestamp();
+                    }
+
                 if(((double) estc_lcl_rtt) / 1000.0f < 1.0f)
                     {
                     printf("%ld bytes from %s: icmp_seq=%u ttl=%u time=%.03f ms\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_, u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), ptr_cstc_pssd_ping_data->s32_ttl_, ((double) estc_lcl_rtt) / 1000.0f);
@@ -1713,7 +1944,7 @@ static uint8_t Fu8__checking_reply_packet_ipv6(volatile struct cstc_ping_data *p
     return (RETURN_SUCCESS);
     }
 
-uint8_t Fu8__receve_pong(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
+uint8_t Fu8__receve_pong(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     {
     /**
     * Assertion of argument
@@ -1795,6 +2026,8 @@ uint8_t Fu8__receve_pong(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data
     * Initialization of local variable
     */
     u8_lcl_return_from_function = RETURN_FAILURE;
+
+    ft_memset(u8_lcl_packet, 0, sizeof(u8_lcl_packet));
 
     /**
     * Reseting the receve ip address structure of the structure ping data

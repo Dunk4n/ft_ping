@@ -21,6 +21,7 @@
 # include <linux/icmpv6.h>
 # include <math.h>
 # include <errno.h>
+# include <linux/errqueue.h>
 
 # include "../libft/libft.h"
 
@@ -62,6 +63,7 @@ enum e_simple_option_list
     QUIET_OUTPUT,
     USE_IPV4,
     USE_IPV6,
+    TIMESTAMP,
 
     SIMPLE_OPTION_NUMBER,
     NO_SIMPLE_OPTION                                                           // range UINT8_MAX
@@ -78,7 +80,8 @@ enum e_argument_option_list
     PATTERN,
     QUALITY_OF_SERVICE,
     SNDBUF,
-    PING_ONLY,
+    TTL,
+    COUNT_ECHO,
 
     ARGUMENT_OPTION_NUMBER,
     NO_ARGUMENT_OPTION                                                         // range UINT8_MAX
@@ -115,15 +118,15 @@ void Fv__help(void);
 # define ICMP_HDR_SIZE          ICMP_MINLEN
 # define ICMP_PAYLOAD_SIZE      (56)
 # define PACKET_SIZE            (IP_HDR_SIZE + ICMP_HDR_SIZE + ICMP_PAYLOAD_SIZE)
-# define ALIGN_TIMESTAMP        (4)
 
 # define FT_PING_NUMBER_OF_SECONDS_BETWEEN_PING (1)
 
 # define ROOT_USER (0)
 
 # define ONE_SECOND_IN_MICROSECOND (1000000)
-//# define FLOOD_WAIT (1000000)
-# define FLOOD_WAIT (3000)
+# define FLOOD_WAIT (3500)
+# define PRELOAD_PING_NOT_ROOT_MAX (3)
+# define PATTERN_MAX_SIZE (16)
 
 struct cstc_ping_data
     {
@@ -144,6 +147,9 @@ struct cstc_ping_data
 
             // FOURTH_BIT    Packet error               1 = Y / 0 = N
             uint8_t u8_global_status_packet_error_ : 1;
+
+            // FIFTH_BIT     Packet error data          1 = Y / 0 = N
+            uint8_t u8_global_status_packet_error_data_ : 1;
             };
         };
 
@@ -170,6 +176,7 @@ struct cstc_ping_data
     uint32_t    u32_number_packets_transmitted_;
     uint32_t    u32_number_packets_receved_;
     uint32_t    u32_number_errors_;
+    uint32_t    u32_max_number_packets_;
 
     ssize_t     estc_number_of_bytes_receve_;
     int32_t     s32_ttl_;
@@ -179,6 +186,17 @@ struct cstc_ping_data
         struct sockaddr_in6 estc_receve_ipv6_address_;
     };
 
+    struct sock_extended_err estc_error_packet_data_;
+
+    int32_t     s32_echo_tll_;
+
+    int32_t     s32_mark_;
+
+    int32_t     s32_send_buffer_size_;
+
+    uint8_t     u8_pattern_[PATTERN_MAX_SIZE];
+    uint8_t     u8_pattern_size_;
+
     argument_t  sstc_argument_;
     };
 
@@ -187,21 +205,21 @@ suseconds_t get_time(void);
 /**
 * Ping_data
 */
-uint8_t Fu8__close_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data);
-uint8_t Fu8__get_value_from_ping_argument(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data);
-uint8_t Fu8__init_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data);
-uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data);
-uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data);
-void    Fv__display_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data);
-void    Fv__display_ping_statistic(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data);
+uint8_t Fu8__close_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
+uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
+uint8_t Fu8__init_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
+uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
+uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
+void    Fv__display_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
+void    Fv__display_ping_statistic(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
 
-extern volatile struct cstc_ping_data cstc_glbl_ping_data;
+extern struct cstc_ping_data cstc_glbl_ping_data;
 
 /**
 * Packet
 */
-uint8_t Fu8__getting_packet(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet);
-uint8_t Fu8__receve_pong(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data);
+uint8_t Fu8__getting_packet(struct cstc_ping_data *ptr_cstc_pssd_ping_data, uint8_t *ptr_u8_pssd_packet);
+uint8_t Fu8__receve_pong(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
 
 /**
 * Signal

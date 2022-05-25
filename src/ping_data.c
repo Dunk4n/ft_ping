@@ -1,6 +1,6 @@
 #include "ft_ping.h"
 
-uint8_t Fu8__init_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
+uint8_t Fu8__init_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     {
     /**
     * Assertion of argument
@@ -181,11 +181,23 @@ uint8_t Fu8__init_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_p
     */
     ptr_cstc_pssd_ping_data->u32_number_errors_ = 0;
 
+    ptr_cstc_pssd_ping_data->u32_max_number_packets_ = 0;
+
     /**
     * Setting packet data
     */
     ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_ = 0;
     ptr_cstc_pssd_ping_data->s32_ttl_                     = 0;
+
+    ptr_cstc_pssd_ping_data->s32_mark_     = 0;
+    ptr_cstc_pssd_ping_data->s32_echo_tll_ = 0;
+
+    ptr_cstc_pssd_ping_data->s32_send_buffer_size_ = 0;
+
+    (void) ft_memset(ptr_cstc_pssd_ping_data->u8_pattern_, 0, PATTERN_MAX_SIZE);
+    ptr_cstc_pssd_ping_data->u8_pattern_size_ = 0;
+
+    (void) ft_memset(&ptr_cstc_pssd_ping_data->estc_error_packet_data_, 0, sizeof(ptr_cstc_pssd_ping_data->estc_error_packet_data_));
 
     /**
     * Initialize the structure argument of the structure ping data
@@ -234,7 +246,7 @@ uint8_t Fu8__init_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_p
     return (RETURN_SUCCESS);
     }
 
-uint8_t Fu8__close_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
+uint8_t Fu8__close_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     {
     /**
     * Assertion of argument
@@ -463,11 +475,23 @@ uint8_t Fu8__close_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_
     */
     ptr_cstc_pssd_ping_data->u32_number_errors_ = 0;
 
+    ptr_cstc_pssd_ping_data->u32_max_number_packets_ = 0;
+
     /**
     * Setting packet data
     */
     ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_ = 0;
     ptr_cstc_pssd_ping_data->s32_ttl_                     = 0;
+
+    ptr_cstc_pssd_ping_data->s32_mark_     = 0;
+    ptr_cstc_pssd_ping_data->s32_echo_tll_ = 0;
+
+    ptr_cstc_pssd_ping_data->s32_send_buffer_size_ = 0;
+
+    (void) ft_memset(ptr_cstc_pssd_ping_data->u8_pattern_, 0, PATTERN_MAX_SIZE);
+    ptr_cstc_pssd_ping_data->u8_pattern_size_ = 0;
+
+    (void) ft_memset(&ptr_cstc_pssd_ping_data->estc_error_packet_data_, 0, sizeof(ptr_cstc_pssd_ping_data->estc_error_packet_data_));
 
     /**
     * Check if the structure argument is initialized
@@ -532,7 +556,7 @@ uint8_t Fu8__close_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_
     return (RETURN_SUCCESS);
     }
 
-void Fv__display_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
+void Fv__display_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     {
     /**
     * Assertion of argument
@@ -732,7 +756,7 @@ void Fv__display_cstc_ping_data(volatile struct cstc_ping_data *ptr_cstc_pssd_pi
     ft_printf("    ***********************************************\n");
     }
 
-uint8_t Fu8__get_value_from_ping_argument(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
+uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     {
     /**
     * Assertion of argument
@@ -1108,7 +1132,7 @@ uint8_t Fu8__get_value_from_ping_argument(volatile struct cstc_ping_data *ptr_cs
     return (RETURN_SUCCESS);
     }
 
-uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
+uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     {
     /**
     * Assertion of argument
@@ -1257,7 +1281,8 @@ uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping
     * Setting the option to get the time to live in the receving message
     */
     s32_lcl_return_from_function = -1;
-    s32_lcl_return_from_function = setsockopt(s32_lcl_socket, IPPROTO_IP, IP_RECVTTL, (int[1]) {1}, sizeof(int));
+    s32_lcl_return_from_function = setsockopt(s32_lcl_socket, IPPROTO_IP, IP_RECVTTL, (int[1]) {
+            1}, sizeof(int));
 
     /**
     * Check if function to set the option to get the time to live in the receving message succeeded
@@ -1283,7 +1308,7 @@ uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping
         /**
         * Closing the socket to send icmp echo request
         */
-        s32_lcl_return_from_function = RETURN_FAILURE;
+        s32_lcl_return_from_function = -1;
         s32_lcl_return_from_function = close(s32_lcl_socket);
         s32_lcl_socket               = -1;
 
@@ -1333,6 +1358,86 @@ uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping
         }
 
     /**
+    * Setting the option to get error packet
+    */
+    s32_lcl_return_from_function = -1;
+    s32_lcl_return_from_function = setsockopt(s32_lcl_socket, IPPROTO_IP, IP_RECVERR, (int[1]) {
+            1}, sizeof(int));
+
+    /**
+    * Check if function to set the option to get error packet succeeded
+    */
+    if(s32_lcl_return_from_function != 0)
+        {
+        /**
+        * Treat the case when the function to set the option to get error packet failed
+        */
+
+        #ifdef DEVELOPEMENT
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get error packet failed\n", __FILE__, __func__, __LINE__);
+        #endif
+
+        #ifdef DEMO
+        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        #endif
+
+        #ifdef PRODUCTION
+        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        #endif
+
+        /**
+        * Closing the socket to send icmp echo request
+        */
+        s32_lcl_return_from_function = -1;
+        s32_lcl_return_from_function = close(s32_lcl_socket);
+        s32_lcl_socket               = -1;
+
+        /**
+        * Check if function to close the socket to send icmp echo request succeeded
+        */
+        if(s32_lcl_return_from_function < 0)
+            {
+            /**
+            * Treat the case when the function to close the socket to send icmp echo request failed
+            */
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Return failure to indicate the function to close the socket to send icmp echo request failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to close the socket to send icmp echo request succeeded
+            */
+            }
+
+        /**
+        * Return failure to indicate the function to set the option to get error packet failed
+        */
+        return (RETURN_FAILURE);
+        }
+    else
+        {
+        /**
+        * Treat the case when function to set the option to get error packet succeeded
+        */
+        }
+
+    /**
     * Check if the actual protocol is ip v6
     */
     if(ptr_cstc_pssd_ping_data->u16_ip_family_ == AF_INET6)
@@ -1345,7 +1450,8 @@ uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping
         * Setting the option to get the time to live in the receving message
         */
         s32_lcl_return_from_function = -1;
-        s32_lcl_return_from_function = setsockopt(s32_lcl_socket, IPPROTO_IPV6, IPV6_RECVHOPLIMIT, (int[1]) {1}, sizeof(int));
+        s32_lcl_return_from_function = setsockopt(s32_lcl_socket, IPPROTO_IPV6, IPV6_RECVHOPLIMIT, (int[1]) {
+                1}, sizeof(int));
 
         /**
         * Check if function to set the option to get the time to live in the receving message succeeded
@@ -1371,7 +1477,7 @@ uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping
             /**
             * Closing the socket to send icmp echo request
             */
-            s32_lcl_return_from_function = RETURN_FAILURE;
+            s32_lcl_return_from_function = -1;
             s32_lcl_return_from_function = close(s32_lcl_socket);
             s32_lcl_socket               = -1;
 
@@ -1419,12 +1525,364 @@ uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping
             * Treat the case when function to set the option to get the time to live in the receving message succeeded
             */
             }
+
+        /**
+        * Setting the option to get error packet
+        */
+        s32_lcl_return_from_function = -1;
+        s32_lcl_return_from_function = setsockopt(s32_lcl_socket, IPPROTO_IPV6, IPV6_RECVERR, (int[1]) {
+                1}, sizeof(int));
+
+        /**
+        * Check if function to set the option to get error packet succeeded
+        */
+        if(s32_lcl_return_from_function != 0)
+            {
+            /**
+            * Treat the case when the function to set the option to get error packet failed
+            */
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get error packet failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Closing the socket to send icmp echo request
+            */
+            s32_lcl_return_from_function = -1;
+            s32_lcl_return_from_function = close(s32_lcl_socket);
+            s32_lcl_socket               = -1;
+
+            /**
+            * Check if function to close the socket to send icmp echo request succeeded
+            */
+            if(s32_lcl_return_from_function < 0)
+                {
+                /**
+                * Treat the case when the function to close the socket to send icmp echo request failed
+                */
+
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                #endif
+
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
+
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+
+                /**
+                * Return failure to indicate the function to close the socket to send icmp echo request failed
+                */
+                return (RETURN_FAILURE);
+                }
+            else
+                {
+                /**
+                * Treat the case when function to close the socket to send icmp echo request succeeded
+                */
+                }
+
+            /**
+            * Return failure to indicate the function to set the option to get error packet failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to set the option to get error packet succeeded
+            */
+            } 
         }
     else
         {
         /**
         * Treat the case when the actual protocol is ip v4
         */
+        }
+
+    if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_argument_options_[MARK] != FALSE)
+        {
+        /**
+        * Setting the mark to the socket
+        */
+        s32_lcl_return_from_function = -1;
+        s32_lcl_return_from_function = setsockopt(s32_lcl_socket, SOL_SOCKET, SO_MARK, &ptr_cstc_pssd_ping_data->s32_mark_, sizeof(int));
+
+        /**
+        * Check if function to set the mark to the socket succeeded
+        */
+        if(s32_lcl_return_from_function != 0)
+            {
+            /**
+            * Treat the case when the function to set the mark to the socket failed
+            */
+
+            if(errno == EPERM)
+                {
+                fprintf(stderr, "ft_ping: Warning: Failed to set mark: %d: Operation not permitted\n", ptr_cstc_pssd_ping_data->s32_mark_);
+                }
+            else
+                {
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the mark to the socket failed\n", __FILE__, __func__, __LINE__);
+                #endif
+
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
+
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+
+                /**
+                * Closing the socket to send icmp echo request
+                */
+                s32_lcl_return_from_function = -1;
+                s32_lcl_return_from_function = close(s32_lcl_socket);
+                s32_lcl_socket               = -1;
+
+                /**
+                * Check if function to close the socket to send icmp echo request succeeded
+                */
+                if(s32_lcl_return_from_function < 0)
+                    {
+                    /**
+                    * Treat the case when the function to close the socket to send icmp echo request failed
+                    */
+
+                    #ifdef DEVELOPEMENT
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                    #endif
+
+                    #ifdef DEMO
+                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                    #endif
+
+                    #ifdef PRODUCTION
+                    fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                    #endif
+
+                    /**
+                    * Return failure to indicate the function to close the socket to send icmp echo request failed
+                    */
+                    return (RETURN_FAILURE);
+                    }
+                else
+                    {
+                    /**
+                    * Treat the case when function to close the socket to send icmp echo request succeeded
+                    */
+                    }
+
+                /**
+                * Return failure to indicate the function to set the mark to the socket failed
+                */
+                return (RETURN_FAILURE);
+                }
+            }
+        else
+            {
+            /**
+            * Treat the case when function to set the mark to the socket succeeded
+            */
+            }
+        }
+
+    if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_argument_options_[SNDBUF] != FALSE)
+        {
+        /**
+        * Setting the size of the send buffer
+        */
+        s32_lcl_return_from_function = -1;
+        s32_lcl_return_from_function = setsockopt(s32_lcl_socket, SOL_SOCKET, SO_SNDBUF, &ptr_cstc_pssd_ping_data->s32_send_buffer_size_, sizeof(int));
+
+        /**
+        * Check if function to set the size of the send buffer succeeded
+        */
+        if(s32_lcl_return_from_function != 0)
+            {
+            /**
+            * Treat the case when the function to set the size of the send buffer failed
+            */
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the size of the send buffer failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Closing the socket to send icmp echo request
+            */
+            s32_lcl_return_from_function = -1;
+            s32_lcl_return_from_function = close(s32_lcl_socket);
+            s32_lcl_socket               = -1;
+
+            /**
+            * Check if function to close the socket to send icmp echo request succeeded
+            */
+            if(s32_lcl_return_from_function < 0)
+                {
+                /**
+                * Treat the case when the function to close the socket to send icmp echo request failed
+                */
+
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                #endif
+
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
+
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+
+                /**
+                * Return failure to indicate the function to close the socket to send icmp echo request failed
+                */
+                return (RETURN_FAILURE);
+                }
+            else
+                {
+                /**
+                * Treat the case when function to close the socket to send icmp echo request succeeded
+                */
+                }
+
+            /**
+            * Return failure to indicate the function to set the size of the send buffer failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to set the size of the send buffer succeeded
+            */
+            }
+        }
+
+    if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_argument_options_[TTL] != FALSE)
+        {
+        /**
+        * Setting the TTL of the packet
+        */
+        s32_lcl_return_from_function = -1;
+
+        /**
+        * Check if the actual protocol is ip v6
+        */
+        if(ptr_cstc_pssd_ping_data->u16_ip_family_ == AF_INET6)
+            {
+            /**
+            * Treat the case when the actual protocol is ip v6
+            */
+
+            s32_lcl_return_from_function = setsockopt(s32_lcl_socket, IPPROTO_IPV6, IPV6_UNICAST_HOPS, &ptr_cstc_pssd_ping_data->s32_echo_tll_, sizeof(int));
+            }
+        else
+            {
+            /**
+            * Treat the case when the actual protocol is ip v4
+            */
+
+            s32_lcl_return_from_function = setsockopt(s32_lcl_socket, IPPROTO_IP, IP_TTL, &ptr_cstc_pssd_ping_data->s32_echo_tll_, sizeof(int));
+            }
+
+        /**
+        * Check if function to set the TTL of the packet succeeded
+        */
+        if(s32_lcl_return_from_function < 0)
+            {
+            /**
+            * Treat the case when the function to set the TTL of the packet failed
+            */
+
+            #ifdef DEVELOPEMENT
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the TTL of the packet failed\n", __FILE__, __func__, __LINE__);
+            #endif
+
+            #ifdef DEMO
+            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            #endif
+
+            #ifdef PRODUCTION
+            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            #endif
+
+            /**
+            * Closing the socket to send icmp echo request
+            */
+            s32_lcl_return_from_function = -1;
+            s32_lcl_return_from_function = close(s32_lcl_socket);
+            s32_lcl_socket               = -1;
+
+            /**
+            * Check if function to close the socket to send icmp echo request succeeded
+            */
+            if(s32_lcl_return_from_function < 0)
+                {
+                /**
+                * Treat the case when the function to close the socket to send icmp echo request failed
+                */
+
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                #endif
+
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
+
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+
+                /**
+                * Return failure to indicate the function to close the socket to send icmp echo request failed
+                */
+                return (RETURN_FAILURE);
+                }
+            else
+                {
+                /**
+                * Treat the case when function to close the socket to send icmp echo request succeeded
+                */
+                }
+
+            /**
+            * Return failure to indicate the function to set the TTL of the packet failed
+            */
+            return (RETURN_FAILURE);
+            }
+        else
+            {
+            /**
+            * Treat the case when function to set the TTL of the packet succeeded
+            */
+            }
         }
 
     /**
@@ -1440,7 +1898,7 @@ uint8_t Fu8__start_connection(volatile struct cstc_ping_data *ptr_cstc_pssd_ping
     return (RETURN_SUCCESS);
     }
 
-void Fv__display_ping_statistic(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
+void Fv__display_ping_statistic(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     {
     /**
     * Assertion of argument
@@ -1576,7 +2034,7 @@ void Fv__display_ping_statistic(volatile struct cstc_ping_data *ptr_cstc_pssd_pi
         }
     }
 
-uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
+uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     {
     /**
     * Assertion of argument
@@ -1654,6 +2112,7 @@ uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     ssize_t          estc_lcl_number_of_bytes_send;
     struct icmp6hdr *ptr_estc_lcl_icmpv6_header;
     struct icmphdr  *ptr_estc_lcl_icmp_header;
+    uint8_t          u8_lcl_cnt;
     uint8_t          u8_lcl_packet[ICMP_HDR_SIZE + ICMP_PAYLOAD_SIZE];
 
     /**
@@ -1662,6 +2121,12 @@ uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     estc_lcl_number_of_bytes_send = -1;
     ptr_estc_lcl_icmp_header      = NULL;
     ptr_estc_lcl_icmpv6_header    = NULL;
+    u8_lcl_cnt                    = 0;
+
+    if((ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_argument_options_[COUNT_ECHO] != FALSE) && (ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_ >= ptr_cstc_pssd_ping_data->u32_max_number_packets_))
+        {
+        return (RETURN_SUCCESS);
+        }
 
     (void) ft_memset(u8_lcl_packet, 0, ICMP_HDR_SIZE + ICMP_PAYLOAD_SIZE);
 
@@ -1705,7 +2170,50 @@ uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
 
     (void) memset(u8_lcl_packet + ICMP_HDR_SIZE, 42, ICMP_PAYLOAD_SIZE);
 
-    (void) gettimeofday((void *) (u8_lcl_packet + ICMP_HDR_SIZE + ALIGN_TIMESTAMP), NULL);
+    (void) gettimeofday((void *) (u8_lcl_packet + ICMP_HDR_SIZE), NULL);
+
+    if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_argument_options_[PATTERN] != FALSE)
+        {
+        u8_lcl_cnt = 0;
+        while((sizeof(struct timeval) + u8_lcl_cnt) < ICMP_PAYLOAD_SIZE)
+            {
+            if(ptr_cstc_pssd_ping_data->u8_pattern_size_ > 0)
+                {
+                u8_lcl_packet[ICMP_HDR_SIZE + sizeof(struct timeval) + u8_lcl_cnt] = ptr_cstc_pssd_ping_data->u8_pattern_[u8_lcl_cnt % ptr_cstc_pssd_ping_data->u8_pattern_size_];
+                }
+            else
+                {
+                u8_lcl_packet[ICMP_HDR_SIZE + sizeof(struct timeval) + u8_lcl_cnt] = 0;
+                }
+
+            /**
+            * Checking for overflow
+            */
+            if(u8_lcl_cnt < UINT8_MAX)
+                {
+                u8_lcl_cnt++;
+                }
+            else
+                {
+                #ifdef DEVELOPEMENT
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 8 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
+                #endif
+
+                #ifdef DEMO
+                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                #endif
+
+                #ifdef PRODUCTION
+                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                #endif
+
+                /**
+                * Return a failure to indicate the counter variable overflow
+                */
+                return (RETURN_FAILURE);
+                } 
+            }
+        }
 
     /**
     * Check if the actual protocol is ip v4
@@ -1836,6 +2344,7 @@ uint8_t Fu8__send_ping(volatile struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     if(ptr_cstc_pssd_ping_data->sstc_argument_.ptr_u8_simple_options_[FLOOD] != FALSE)
         {
         ft_printf(".");
+        fsync(STDOUT_FILENO);
         }
 
     /**
