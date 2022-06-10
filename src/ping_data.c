@@ -16,15 +16,15 @@ uint8_t Fu8__init_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -49,15 +49,15 @@ uint8_t Fu8__init_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is already initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is already initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -129,15 +129,15 @@ uint8_t Fu8__init_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         else
             {
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 32 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 32 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -215,15 +215,15 @@ uint8_t Fu8__init_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to init the structure argument of the structure ping data failed\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to init the structure argument of the structure ping data failed\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -262,15 +262,15 @@ uint8_t Fu8__close_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -295,15 +295,15 @@ uint8_t Fu8__close_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -367,15 +367,15 @@ uint8_t Fu8__close_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data
         else
             {
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 32 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 32 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -411,15 +411,15 @@ uint8_t Fu8__close_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket of the structure ping data failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket of the structure ping data failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -518,15 +518,15 @@ uint8_t Fu8__close_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the structure argument of the structure ping data failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the structure argument of the structure ping data failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -584,15 +584,15 @@ void Fv__display_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -617,15 +617,15 @@ void Fv__display_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -663,12 +663,12 @@ void Fv__display_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     /**
     * Display the ip address structure of the structure ping data
     */
-    printf("\n IP ADDRESS STRUCTURE:\n\n");
+    ft_printf("\n IP ADDRESS STRUCTURE:\n\n");
 
     /**
     * Display the string ip address of the structure ping data
     */
-    printf(" IP ADDRESS:         [\033[1;93;40m%s\033[0m]\n\n", ptr_cstc_pssd_ping_data->u8_ip_address_str_);
+    ft_printf(" IP ADDRESS:         [\033[1;93;40m%s\033[0m]\n\n", ptr_cstc_pssd_ping_data->u8_ip_address_str_);
 
     /**
     * Check if the socket of the structure ping data is set
@@ -682,7 +682,7 @@ void Fv__display_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         /**
         * Display the socket of the structure ping data
         */
-        printf(" SOCKET: SET         [\033[1;93;40m%d\033[0m]\n\n", ptr_cstc_pssd_ping_data->s32_socket_);
+        ft_printf(" SOCKET: SET         [\033[1;93;40m%d\033[0m]\n\n", ptr_cstc_pssd_ping_data->s32_socket_);
         }
     else
         {
@@ -693,43 +693,43 @@ void Fv__display_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         /**
         * Display the socket of the structure ping data
         */
-        printf(" SOCKET: NOT SET     [\033[1;95;40m%d\033[0m]\n\n", ptr_cstc_pssd_ping_data->s32_socket_);
+        ft_printf(" SOCKET: NOT SET     [\033[1;95;40m%d\033[0m]\n\n", ptr_cstc_pssd_ping_data->s32_socket_);
         }
 
     /**
     * Display the packet sequence of the structure ping data
     */
-    printf(" PACKET SEQUENCE:    [\033[1;95;40m%u\033[0m]\n\n", ptr_cstc_pssd_ping_data->u16_packet_sequence_);
+    ft_printf(" PACKET SEQUENCE:    [\033[1;95;40m%u\033[0m]\n\n", ptr_cstc_pssd_ping_data->u16_packet_sequence_);
 
     /**
     * Display the time value of the structure ping data
     */
-    printf(" RTT MIN:            [\033[1;95;40m%lu\033[0m]\n", ptr_cstc_pssd_ping_data->estc_rtt_min_);
-    printf(" RTT MAX:            [\033[1;95;40m%lu\033[0m]\n", ptr_cstc_pssd_ping_data->estc_rtt_max_);
-    printf(" RTT TOTAL:          [\033[1;95;40m%lu\033[0m]\n", ptr_cstc_pssd_ping_data->estc_rtt_total_);
-    printf(" RTT SEQUENCE TOTAL: [\033[1;95;40m%lu\033[0m]\n", ptr_cstc_pssd_ping_data->estc_rtt_square_total_);
-    printf(" RTT START TIME:     [\033[1;95;40m%lu\033[0m]\n\n", ptr_cstc_pssd_ping_data->estc_start_time_);
+    ft_printf(" RTT MIN:            [\033[1;95;40m%lu\033[0m]\n", ptr_cstc_pssd_ping_data->estc_rtt_min_);
+    ft_printf(" RTT MAX:            [\033[1;95;40m%lu\033[0m]\n", ptr_cstc_pssd_ping_data->estc_rtt_max_);
+    ft_printf(" RTT TOTAL:          [\033[1;95;40m%lu\033[0m]\n", ptr_cstc_pssd_ping_data->estc_rtt_total_);
+    ft_printf(" RTT SEQUENCE TOTAL: [\033[1;95;40m%lu\033[0m]\n", ptr_cstc_pssd_ping_data->estc_rtt_square_total_);
+    ft_printf(" RTT START TIME:     [\033[1;95;40m%lu\033[0m]\n\n", ptr_cstc_pssd_ping_data->estc_start_time_);
 
     /**
     * Display the number of packet transmitted of the structure ping data
     */
-    printf(" PACKET TRANSMITTED: [\033[1;95;40m%u\033[0m]\n", ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_);
+    ft_printf(" PACKET TRANSMITTED: [\033[1;95;40m%u\033[0m]\n", ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_);
 
     /**
     * Display the number of packet receved of the structure ping data
     */
-    printf(" PACKET RECEVE:      [\033[1;95;40m%u\033[0m]\n", ptr_cstc_pssd_ping_data->u32_number_packets_receved_);
+    ft_printf(" PACKET RECEVE:      [\033[1;95;40m%u\033[0m]\n", ptr_cstc_pssd_ping_data->u32_number_packets_receved_);
 
     /**
     * Display the number of error of the structure ping data
     */
-    printf(" PACKET ERROR:       [\033[1;95;40m%u\033[0m]\n\n", ptr_cstc_pssd_ping_data->u32_number_errors_);
+    ft_printf(" PACKET ERROR:       [\033[1;95;40m%u\033[0m]\n\n", ptr_cstc_pssd_ping_data->u32_number_errors_);
 
     /**
     * Display packet data
     */
-    printf(" NUMBER OF BYTES RECEVE: [\033[1;95;40m%ld\033[0m]\n\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_);
-    printf(" TTL:                    [\033[1;95;40m%u\033[0m]\n\n", ptr_cstc_pssd_ping_data->s32_ttl_);
+    ft_printf(" NUMBER OF BYTES RECEVE: [\033[1;95;40m%ld\033[0m]\n\n", ptr_cstc_pssd_ping_data->estc_number_of_bytes_receve_);
+    ft_printf(" TTL:                    [\033[1;95;40m%u\033[0m]\n\n", ptr_cstc_pssd_ping_data->s32_ttl_);
 
     /**
     * Check if the structure argument is initialized
@@ -748,7 +748,7 @@ void Fv__display_cstc_ping_data(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         * Treat the case when the structure argument is not initialized
         */
 
-        printf(" STRUCTURE ARGUMENT NOT INITIALIZED\n");
+        ft_printf(" STRUCTURE ARGUMENT NOT INITIALIZED\n");
         }
 
     ft_printf("\n    ***********************************************\n");
@@ -772,15 +772,15 @@ uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_p
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -805,15 +805,15 @@ uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_p
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -838,15 +838,15 @@ uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_p
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure argument in the struture ping data passed in argument of the function is not initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure argument in the struture ping data passed in argument of the function is not initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -937,34 +937,43 @@ uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_p
         * Treat the case when the function to get the address information of the given destination failed
         */
 
+        if(s32_lcl_return_from_function == 0)
+            {
+            /**
+            * Freeing and setting to NULL the address info structure
+            */
+            (void) freeaddrinfo(ptr_estc_lcl_address_receved);
+            ptr_estc_lcl_address_receved = NULL;
+            }
+
         switch(s32_lcl_return_from_function)
             {
             case(EAI_AGAIN):
-                fprintf(stderr, "ft_ping: %s: Temporary failure in name resolution\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
+                ft_fprintf(STDERR_FILENO, "ft_ping: %s: Temporary failure in name resolution\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
                 ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
                 return (RETURN_FAILURE);
                 break;
             case(EAI_NONAME):
-                fprintf(stderr, "ft_ping: %s: Name or service not known\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
+                ft_fprintf(STDERR_FILENO, "ft_ping: %s: Name or service not known\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
                 ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
                 return (RETURN_FAILURE);
                 break;
             case(EAI_ADDRFAMILY):
-                fprintf(stderr, "ft_ping: %s: Address family for hostname not supported\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
+                ft_fprintf(STDERR_FILENO, "ft_ping: %s: Address family for hostname not supported\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
                 ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
                 return (RETURN_FAILURE);
                 break;
             default:
                 #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in the function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the address information of the given destination failed\n", __FILE__, __func__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in the function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the address information of the given destination failed\n", __FILE__, __func__, __LINE__);
                 #endif
 
                 #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                 #endif
 
                 #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                 #endif
                 break;
             }
@@ -996,16 +1005,22 @@ uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_p
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the address of the structure ip is not correctly pointing\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the address of the structure ip is not correctly pointing\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
+
+        /**
+        * Freeing and setting to NULL the address info structure
+        */
+        (void) freeaddrinfo(ptr_estc_lcl_address_receved);
+        ptr_estc_lcl_address_receved = NULL;
 
         /**
         * Return failure to indicate the address of the structure ip is not correctly pointing
@@ -1049,16 +1064,22 @@ uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_p
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the ip v4 into a character string failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the ip v4 into a character string failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
+
+            /**
+            * Freeing and setting to NULL the address info structure
+            */
+            (void) freeaddrinfo(ptr_estc_lcl_address_receved);
+            ptr_estc_lcl_address_receved = NULL;
 
             /**
             * Return failure to indicate the function to get the ip v4 into a character string failed
@@ -1099,16 +1120,22 @@ uint8_t Fu8__get_value_from_ping_argument(struct cstc_ping_data *ptr_cstc_pssd_p
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the ip v6 into a character string failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to get the ip v6 into a character string failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
+
+            /**
+            * Freeing and setting to NULL the address info structure
+            */
+            (void) freeaddrinfo(ptr_estc_lcl_address_receved);
+            ptr_estc_lcl_address_receved = NULL;
 
             /**
             * Return failure to indicate the function to get the ip v6 into a character string failed
@@ -1148,15 +1175,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -1181,15 +1208,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -1254,15 +1281,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the socket to the destination failed\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the socket to the destination failed\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -1294,15 +1321,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get the time to live in the receving message failed\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get the time to live in the receving message failed\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -1322,15 +1349,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -1374,15 +1401,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get error packet failed\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get error packet failed\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -1402,15 +1429,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -1463,15 +1490,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get the time to live in the receving message failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get the time to live in the receving message failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -1491,15 +1518,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
                 */
 
                 #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
                 #endif
 
                 #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                 #endif
 
                 #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                 #endif
 
                 /**
@@ -1543,15 +1570,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get error packet failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the option to get error packet failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -1571,15 +1598,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
                 */
 
                 #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
                 #endif
 
                 #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                 #endif
 
                 #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                 #endif
 
                 /**
@@ -1604,7 +1631,7 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             /**
             * Treat the case when function to set the option to get error packet succeeded
             */
-            } 
+            }
         }
     else
         {
@@ -1632,20 +1659,20 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
 
             if(errno == EPERM)
                 {
-                fprintf(stderr, "ft_ping: Warning: Failed to set mark: %d: Operation not permitted\n", ptr_cstc_pssd_ping_data->s32_mark_);
+                ft_fprintf(STDERR_FILENO, "ft_ping: Warning: Failed to set mark: %d: Operation not permitted\n", ptr_cstc_pssd_ping_data->s32_mark_);
                 }
             else
                 {
                 #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the mark to the socket failed\n", __FILE__, __func__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the mark to the socket failed\n", __FILE__, __func__, __LINE__);
                 #endif
 
                 #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                 #endif
 
                 #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                 #endif
 
                 /**
@@ -1665,15 +1692,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
                     */
 
                     #ifdef DEVELOPEMENT
-                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
                     #endif
 
                     #ifdef DEMO
-                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                     #endif
 
                     #ifdef PRODUCTION
-                    fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                     #endif
 
                     /**
@@ -1720,15 +1747,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the size of the send buffer failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the size of the send buffer failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -1748,15 +1775,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
                 */
 
                 #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
                 #endif
 
                 #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                 #endif
 
                 #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                 #endif
 
                 /**
@@ -1821,15 +1848,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             */
 
             #ifdef DEVELOPEMENT
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the TTL of the packet failed\n", __FILE__, __func__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to set the TTL of the packet failed\n", __FILE__, __func__, __LINE__);
             #endif
 
             #ifdef DEMO
-            fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
             #endif
 
             #ifdef PRODUCTION
-            fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+            ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
             #endif
 
             /**
@@ -1849,15 +1876,15 @@ uint8_t Fu8__start_connection(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
                 */
 
                 #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to close the socket to send icmp echo request failed\n", __FILE__, __func__, __LINE__);
                 #endif
 
                 #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                 #endif
 
                 #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                 #endif
 
                 /**
@@ -1914,15 +1941,15 @@ void Fv__display_ping_statistic(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -1947,15 +1974,15 @@ void Fv__display_ping_statistic(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -1980,15 +2007,15 @@ void Fv__display_ping_statistic(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure argument in the struture ping data passed in argument of the function is not initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure argument in the struture ping data passed in argument of the function is not initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -2013,15 +2040,15 @@ void Fv__display_ping_statistic(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     */
     estc_lcl_mdev = 0;
 
-    printf("\n--- %s ping statistics ----\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
-    printf("%u packets transmitted, ", ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_);
-    printf("%u received, ", ptr_cstc_pssd_ping_data->u32_number_packets_receved_);
+    ft_printf("\n--- %s ping statistics ----\n", ptr_cstc_pssd_ping_data->sstc_argument_.dbl_ptr_u8_additional_argument_str_[0]);
+    ft_printf("%u packets transmitted, ", ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_);
+    ft_printf("%u received, ", ptr_cstc_pssd_ping_data->u32_number_packets_receved_);
     if(ptr_cstc_pssd_ping_data->u32_number_errors_ > 0)
         {
-        printf("+%u errors, ", ptr_cstc_pssd_ping_data->u32_number_errors_);
+        ft_printf("+%u errors, ", ptr_cstc_pssd_ping_data->u32_number_errors_);
         }
-    printf("%u%% packet loss, ", (uint32_t) ((1.0f - ((float) ptr_cstc_pssd_ping_data->u32_number_packets_receved_ / (float) ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_)) * 100.0f));
-    printf("time %lums\n", (get_time() - ptr_cstc_pssd_ping_data->estc_start_time_) / 1000);
+    ft_printf("%u%% packet loss, ", (uint32_t) ((1.0f - ((float) ptr_cstc_pssd_ping_data->u32_number_packets_receved_ / (float) ptr_cstc_pssd_ping_data->u32_number_packets_transmitted_)) * 100.0f));
+    ft_printf("time %lums\n", (get_time() - ptr_cstc_pssd_ping_data->estc_start_time_) / 1000);
 
     if(ptr_cstc_pssd_ping_data->u32_number_packets_receved_ > 0)
         {
@@ -2030,7 +2057,7 @@ void Fv__display_ping_statistic(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
 
         estc_lcl_mdev = sqrtl(ptr_cstc_pssd_ping_data->estc_rtt_square_total_ - (estc_lcl_mdev * estc_lcl_mdev));
 
-        printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n", ptr_cstc_pssd_ping_data->estc_rtt_min_ / 1000.0f, ptr_cstc_pssd_ping_data->estc_rtt_total_ / (float) ptr_cstc_pssd_ping_data->u32_number_packets_receved_ / 1000.0f, ptr_cstc_pssd_ping_data->estc_rtt_max_ / 1000.0f, estc_lcl_mdev / 1000.0f);
+        ft_printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n", ptr_cstc_pssd_ping_data->estc_rtt_min_ / 1000.0f, ptr_cstc_pssd_ping_data->estc_rtt_total_ / (float) ptr_cstc_pssd_ping_data->u32_number_packets_receved_ / 1000.0f, ptr_cstc_pssd_ping_data->estc_rtt_max_ / 1000.0f, estc_lcl_mdev / 1000.0f);
         }
     }
 
@@ -2050,15 +2077,15 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not correctly pointing passed as an argument of the function\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -2083,15 +2110,15 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
         */
 
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    the structure ping data is not initialized\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
@@ -2196,15 +2223,15 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             else
                 {
                 #ifdef DEVELOPEMENT
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 8 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 8 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
                 #endif
 
                 #ifdef DEMO
-                fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                 #endif
 
                 #ifdef PRODUCTION
-                fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                 #endif
 
                 /**
@@ -2242,29 +2269,29 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             switch(errno)
                 {
                 case(EINVAL):
-                    fprintf(stderr, "ft_ping: sendmsg: Invalid argument\n");
+                    ft_fprintf(STDERR_FILENO, "ft_ping: sendmsg: Invalid argument\n");
                     return (RETURN_SUCCESS);
                     break;
                 case(ENOBUFS):
-                    fprintf(stderr, "ft_ping: sendmsg: No buffer space available\n");
+                    ft_fprintf(STDERR_FILENO, "ft_ping: sendmsg: No buffer space available\n");
                     return (RETURN_SUCCESS);
                     break;
                 case(EACCES):
-                    fprintf(stderr, "can not ping to breadcast\n");
+                    ft_fprintf(STDERR_FILENO, "can not ping to broadcast\n");
                     ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
                     return (RETURN_FAILURE);
                     break;
                 default:
                     #ifdef DEVELOPEMENT
-                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to send the icmp v4 echo request to the destination failed\n", __FILE__, __func__, __LINE__);
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to send the icmp v4 echo request to the destination failed\n", __FILE__, __func__, __LINE__);
                     #endif
 
                     #ifdef DEMO
-                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                     #endif
 
                     #ifdef PRODUCTION
-                    fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                     #endif
                     break;
                 }
@@ -2305,25 +2332,29 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
             switch(errno)
                 {
                 case(EINVAL):
-                    fprintf(stderr, "ft_ping: sendmsg: Invalid argument\n");
+                    ft_fprintf(STDERR_FILENO, "ft_ping: sendmsg: Invalid argument\n");
+                    return (RETURN_SUCCESS);
+                    break;
+                case(ENOBUFS):
+                    ft_fprintf(STDERR_FILENO, "ft_ping: sendmsg: No buffer space available\n");
                     return (RETURN_SUCCESS);
                     break;
                 case(EACCES):
-                    fprintf(stderr, "can not ping to breadcast\n");
+                    ft_fprintf(STDERR_FILENO, "can not ping to broadcast\n");
                     ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
                     return (RETURN_FAILURE);
                     break;
                 default:
                     #ifdef DEVELOPEMENT
-                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to send the icmp v6 echo request to the destination failed\n", __FILE__, __func__, __LINE__);
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to send the icmp v6 echo request to the destination failed\n", __FILE__, __func__, __LINE__);
                     #endif
 
                     #ifdef DEMO
-                    fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
                     #endif
 
                     #ifdef PRODUCTION
-                    fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
                     #endif
 
                     /**
@@ -2357,15 +2388,15 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
     else
         {
         #ifdef DEVELOPEMENT
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 32 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The unsigned 32 integer counter variable is going to overflow\n", __FILE__, __func__, __LINE__);
         #endif
 
         #ifdef DEMO
-        fprintf(stderr, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
         #endif
 
         #ifdef PRODUCTION
-        fprintf(stderr, "\033[1;31mERROR\033[0m\n");
+        ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
         #endif
 
         /**
