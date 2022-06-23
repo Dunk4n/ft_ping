@@ -1368,7 +1368,7 @@ static uint8_t Fu8__checking_reply_packet_ipv4(struct cstc_ping_data *ptr_cstc_p
                     }
                 else
                     {
-                    ft_printf("From %s icmp_seq=%hu\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence));
+                    ft_printf("From %s icmp_seq=%hu type = %u, code = %u\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_header->un.echo.sequence), (uint32_t) ptr_estc_lcl_icmp_header->type, (uint32_t) ptr_estc_lcl_icmp_header->code);
                     }
                 }
             }
@@ -1763,7 +1763,7 @@ static uint8_t Fu8__checking_reply_packet_ipv6(struct cstc_ping_data *ptr_cstc_p
                     }
                 else
                     {
-                    ft_printf("From %s icmp_seq=%hu\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence));
+                    ft_printf("From %s icmp_seq=%hu type = %u, code = %u\n", u8_lcl_sender_address_str, Fu16__reverse_endianness(ptr_estc_lcl_icmp_v6_header->icmp6_sequence), (uint32_t) ptr_estc_lcl_icmp_v6_header->icmp6_type, (uint32_t) ptr_estc_lcl_icmp_v6_header->icmp6_code);
                     }
                 }
             }

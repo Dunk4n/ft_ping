@@ -5,6 +5,22 @@ struct cstc_ping_data cstc_glbl_ping_data =
     .u8_global_status_ = 0,
     };
 
+uint16_t ft_bswap_16(uint16_t value)
+    {
+    return (((__uint16_t) ((((value) >> 8) & 0xff) | (((value) & 0xff) << 8))));
+    }
+
+uint16_t ft_htons(uint16_t value)
+    {
+#if BYTE_ORDER == BIG_ENDIAN
+    return (value);
+#elif BYTE_ORDER == LITTLE_ENDIAN
+    return (ft_bswap_16(value));
+#else
+# error "What kind of system is this?"
+#endif
+    }
+
 suseconds_t get_time(void)
     {
     /**

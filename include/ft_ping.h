@@ -100,9 +100,9 @@ typedef struct  argument_s
     uint64_t             u64_number_of_additional_argument_;
 }                argument_t;
 
-extern const   uint8_t *simple_options[SIMPLE_OPTION_NUMBER];
+extern const uint8_t *simple_options[SIMPLE_OPTION_NUMBER];
 
-extern const   uint8_t *argument_options[ARGUMENT_OPTION_NUMBER];
+extern const uint8_t *argument_options[ARGUMENT_OPTION_NUMBER];
 
 uint8_t Fu8__structure_argument_init(argument_t *ptr_sstc_pssd_argument);
 uint8_t Fu8__structure_argument_close(argument_t *ptr_sstc_pssd_argument);
@@ -226,5 +226,7 @@ uint8_t Fu8__receve_pong(struct cstc_ping_data *ptr_cstc_pssd_ping_data);
 */
 void Fv__signal_handler_exit(__attribute__((unused)) int signal);
 void Fv__signal_handler_alarm(__attribute__((unused)) int signal);
+
+uint16_t ft_htons(uint16_t value);
 
 #endif /* FT_PING */

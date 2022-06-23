@@ -2175,8 +2175,8 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
 
         ptr_estc_lcl_icmp_header->type             = ICMP_ECHO;
         ptr_estc_lcl_icmp_header->code             = 0;
-        ptr_estc_lcl_icmp_header->un.echo.id       = htons(42);
-        ptr_estc_lcl_icmp_header->un.echo.sequence = htons(ptr_cstc_pssd_ping_data->u16_packet_sequence_);
+        ptr_estc_lcl_icmp_header->un.echo.id       = ft_htons(42);
+        ptr_estc_lcl_icmp_header->un.echo.sequence = ft_htons(ptr_cstc_pssd_ping_data->u16_packet_sequence_);
         }
     else
         {
@@ -2191,11 +2191,11 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
 
         ptr_estc_lcl_icmpv6_header->icmp6_type       = ICMPV6_ECHO_REQUEST;
         ptr_estc_lcl_icmpv6_header->icmp6_code       = 0;
-        ptr_estc_lcl_icmpv6_header->icmp6_identifier = htons(42);
-        ptr_estc_lcl_icmpv6_header->icmp6_sequence   = htons(ptr_cstc_pssd_ping_data->u16_packet_sequence_);
+        ptr_estc_lcl_icmpv6_header->icmp6_identifier = ft_htons(42);
+        ptr_estc_lcl_icmpv6_header->icmp6_sequence   = ft_htons(ptr_cstc_pssd_ping_data->u16_packet_sequence_);
         }
 
-    (void) memset(u8_lcl_packet + ICMP_HDR_SIZE, 42, ICMP_PAYLOAD_SIZE);
+    (void) ft_memset(u8_lcl_packet + ICMP_HDR_SIZE, 42, ICMP_PAYLOAD_SIZE);
 
     (void) gettimeofday((void *) (u8_lcl_packet + ICMP_HDR_SIZE), NULL);
 
@@ -2345,21 +2345,8 @@ uint8_t Fu8__send_ping(struct cstc_ping_data *ptr_cstc_pssd_ping_data)
                     return (RETURN_FAILURE);
                     break;
                 default:
-                    #ifdef DEVELOPEMENT
-                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m in function \033[1m%s\033[0m at line \033[1m%d\033[0m\n    The function to send the icmp v6 echo request to the destination failed\n", __FILE__, __func__, __LINE__);
-                    #endif
-
-                    #ifdef DEMO
-                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m: in file \033[1m%s\033[0m at line \033[1m%s\033[0m\n", __FILE__, __LINE__);
-                    #endif
-
-                    #ifdef PRODUCTION
-                    ft_fprintf(STDERR_FILENO, "\033[1;31mERROR\033[0m\n");
-                    #endif
-
-                    /**
-                    * Return failure to indicate the function to send the icmp v6 echo request to the destination failed
-                    */
+                    ft_fprintf(STDERR_FILENO, "ft_ping: connect: Network is unreachable\n");
+                    ptr_cstc_pssd_ping_data->u8_global_status_silent_error_ = TRUE;
                     return (RETURN_FAILURE);
                     break;
                 }
